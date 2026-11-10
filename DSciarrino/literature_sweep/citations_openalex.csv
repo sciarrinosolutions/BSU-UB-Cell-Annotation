@@ -1,0 +1,102 @@
+doi,title,openalex_id,openalex_cited_by,retrieved
+10.1093/bib/bbaf207,An overview of computational methods in single-cell transcriptomic cell type annotation.,https://openalex.org/W4410255551,32,2026-11-10
+10.1016/j.csbj.2021.01.015,Automated methods for cell type annotation on scRNA-seq data.,https://openalex.org/W3124814274,264,2026-11-10
+10.1093/nar/gkz543,"CHETAH: a selective, hierarchical cell type identification method for single-cell RNA sequencing.",https://openalex.org/W2951914955,283,2026-11-10
+10.1126/science.abl5197,Cross-tissue immune cell analysis reveals tissue-specific features in humans.,https://openalex.org/W4280596398,1246,2026-11-10
+10.1093/bioadv/vbad029,EasyCellType: marker-based cell-type annotation by automatically querying multiple databases.,https://openalex.org/W4360752286,12,2026-11-10
+10.1038/s41467-022-28803-w,Fully-automated and ultra-fast cell-type identification using specific marker combinations from single-cell transcriptomic data.,https://openalex.org/W4221065117,806,2026-11-10
+10.1016/j.cell.2021.04.048,Integrated analysis of multimodal single-cell data.,https://openalex.org/W3164692211,15377,2026-11-10
+10.1038/s41587-021-01001-7,Mapping single-cell data to reference atlases by transfer learning.,https://openalex.org/W3196650609,657,2026-11-10
+10.1038/s41592-019-0529-1,Probabilistic cell-type assignment of single-cell RNA-seq for tumor microenvironment profiling.,https://openalex.org/W2973034691,389,2026-11-10
+10.15252/msb.20209620,Probabilistic harmonization and annotation of single-cell transcriptomics data with deep generative models.,https://openalex.org/W3121168830,747,2026-11-10
+10.1038/s41590-018-0276-y,Reference-based analysis of lung single-cell sequencing reveals a transitional profibrotic macrophage.,https://openalex.org/W2907514116,5029,2026-11-10
+10.3390/genes10070531,SCINA: A Semi-Supervised Subtyping Algorithm of Single Cells and Bulk Samples.,https://openalex.org/W2959295202,287,2026-11-10
+10.3389/fgene.2020.00490,SCSA: A Cell Type Annotation Tool for Single-Cell RNA-seq Data.,https://openalex.org/W3024842005,168,2026-11-10
+10.1038/s41592-019-0535-3,Supervised classification enables rapid annotation of cell atlases.,https://openalex.org/W2971398276,490,2026-11-10
+10.1038/s41596-021-00534-0,Tutorial: guidelines for annotating single-cell transcriptomic maps using automated and manual methods.,https://openalex.org/W3165190053,234,2026-11-10
+10.1016/j.isci.2020.100882,scCATCH: Automatic Annotation on Cell Types of Clusters from Single-Cell RNA Sequencing Data.,https://openalex.org/W3004512212,289,2026-11-10
+10.1093/bioinformatics/btac141,scGate: marker-based purification of cell types from heterogeneous single-cell RNA-seq datasets.,https://openalex.org/W4214932646,92,2026-11-10
+10.1186/s13059-019-1862-5,scPred: accurate supervised method for cell-type classification from single-cell RNA-seq data.,https://openalex.org/W2995410603,490,2026-11-10
+10.1186/s13059-019-1795-z,A comparison of automatic cell identification methods for single-cell RNA sequencing data.,https://openalex.org/W2971653850,632,2026-11-10
+10.1186/s13059-024-03183-0,A comparison of marker gene selection methods for single-cell RNA sequencing data.,https://openalex.org/W4392167979,129,2026-11-10
+10.1186/s13059-026-03998-z,Benchmarking LLM-based agents for single-cell omics analysis.,https://openalex.org/W4414991266,12,2026-11-10
+10.1101/2025.02.11.637659,Beyond the Hype: The Complexity of Automated Cell Type Annotations with GPT-4,https://openalex.org/W4407603154,3,2026-11-10
+10.48550/arXiv.2505.07865,CellVerse: Do Large Language Models Really Understand Cell Biology?,https://openalex.org/W7196974624,16,2026-11-10
+10.1016/j.gpb.2020.07.004,Evaluation of Cell Type Annotation R Packages on Single-cell RNA-seq Data.,https://openalex.org/W3117771127,156,2026-11-10
+10.12688/f1000research.18490.3,Evaluation of methods to assign cell type labels to cell clusters from single-cell RNA-sequencing data.,https://openalex.org/W2917919349,51,2026-11-10
+10.1093/bib/bbz096,Evaluation of single-cell classifiers for single-cell RNA sequencing data sets.,https://openalex.org/W2984629040,102,2026-11-10
+10.1186/s13059-021-02480-2,"Evaluation of some aspects in supervised cell type identification for single-cell RNA-seq: classifier, feature selection, and reference construction.",https://openalex.org/W3198123874,51,2026-11-10
+10.48550/arXiv.2409.15678,Objectively Evaluating the Reliability of Cell Type Annotation Using LLM-Based Strategies,https://openalex.org/W4414525096,10,2026-11-10
+10.48550/arXiv.2412.02915,Single-Cell Omics Arena: A Benchmark Study for Large Language Models on Cell Type Annotation Using Single-Cell Data,https://openalex.org/W4416738253,8,2026-11-10
+10.1186/s13059-025-03574-x,Zero-shot evaluation reveals limitations of single-cell foundation models.,https://openalex.org/W4409566559,245,2026-11-10
+10.1101/gr.273300.120,A single-cell tumor immune atlas for precision oncology.,https://openalex.org/W3200303312,171,2026-11-10
+10.1093/nar/gkae1142,"CZ CELLxGENE Discover: a single-cell data platform for scalable exploration, analysis and modeling of aggregated data.",https://openalex.org/W4404793799,657,2026-11-10
+10.1038/ncomms14049,Massively parallel digital transcriptional profiling of single cells.,https://openalex.org/W2951506174,7432,2026-11-10
+10.1038/nbt.4042,Multiplexed droplet single-cell RNA-sequencing using natural genetic variation.,https://openalex.org/W2774307122,1131,2026-11-10
+10.1038/nmeth.4380,Simultaneous epitope and transcriptome measurement in single cells.,https://openalex.org/W2739492614,3121,2026-11-10
+10.1038/s41587-020-0465-8,Systematic comparison of single-cell and single-nucleus RNA-sequencing methods.,https://openalex.org/W3015184839,995,2026-11-10
+10.1093/nar/gkac959,TISCH2: expanded datasets and new tools for single-cell transcriptome analyses of the tumor microenvironment.,https://openalex.org/W4307969384,684,2026-11-10
+10.1126/science.abl4896,"The Tabula Sapiens: A multiple-organ, single-cell transcriptomic atlas of humans.",https://openalex.org/W4280598116,1162,2026-11-10
+10.1038/s41467-023-35923-4,Transformer for one stop interpretable cell type annotation.,https://openalex.org/W4316096017,198,2026-11-10
+10.1101/2021.12.05.471261,scBERT as a Large-scale Pretrained Deep Language Model for Cell Type Annotation of Single-cell RNA-seq Data,https://openalex.org/W4297243391,689,2026-11-10
+10.1093/bib/bbag151,AICellType: a large language model-based platform for accurate cell type annotation.,https://openalex.org/W7154910252,2,2026-11-10
+10.1038/s41592-024-02235-4,Assessing GPT-4 for cell type annotation in single-cell RNA-seq analysis.,https://openalex.org/W4393153069,297,2026-11-10
+10.1038/s41467-025-64511-x,Benchmarking cell type and gene set annotation by large language models with AnnDictionary.,https://openalex.org/W4415619016,18,2026-11-10
+10.1038/s41467-025-67084-x,CASSIA: a multi-agent large language model for automated and interpretable cell annotation.,https://openalex.org/W4417088107,28,2026-11-10
+10.1101/2024.05.13.593861,CellAgent: LLM-Driven Multi-Agent Framework for Natural Language-Based Single-Cell Analysis,https://openalex.org/W4396974446,49,2026-11-10
+10.48550/arXiv.2602.13346,CellMaster: Collaborative Cell Type Annotation in Single-Cell Analysis,https://openalex.org/W7129764729,2,2026-11-10
+10.64898/2026.07.06.736807,CellPilot: an agentic framework that pilots small language models through autonomous single-cell annotation,https://openalex.org/W7167942159,0,2026-11-10
+10.48550/arXiv.2505.08844,CellTypeAgent: Trustworthy cell type annotation with Large Language Models,https://openalex.org/W6967058921,8,2026-11-10
+10.1038/s42003-025-08745-x,Evaluation of cell type annotation reliability using a large language model-based identifier.,https://openalex.org/W4414525096,10,2026-11-10
+10.1186/s13040-026-00593-7,Integrative evidence-knowledge marker selection enhances LLM-based cell type annotation in single-cell RNA-seq analysis.,https://openalex.org/W7202208855,0,2026-11-10
+10.1038/s42003-026-10420-8,Large language model consensus substantially improves the cell type annotation accuracy for scRNA-seq data.,https://openalex.org/W4409727640,16,2026-11-10
+10.1101/2025.11.06.686964,Multi-agent AI enables evidence-based cell annotation in single-cell transcriptomics,https://openalex.org/W4416018789,9,2026-11-10
+10.48550/arXiv.2505.00017,ReCellTy: Domain-Specific Knowledge Graph Retrieval-Augmented LLMs Reasoning Workflow for Single-Cell Annotation,https://openalex.org/W6910671437,1,2026-11-10
+10.48550/arXiv.2504.04698,scAgent: Universal Single-Cell Annotation via a LLM Agent,https://openalex.org/W4416117521,10,2026-11-10
+10.1371/journal.pcbi.1014291,scHilda: Hierarchical Integration of LLM with KG database for single cell type annotation.,https://openalex.org/W7160841933,0,2026-11-10
+10.1126/sciadv.abh2169,A single-cell type transcriptomics map of human tissues.,https://openalex.org/W3184729641,1856,2026-11-10
+10.1038/s41467-025-60900-4,Cell Marker Accordion: interpretable single-cell and spatial omics annotation in health and disease.,https://openalex.org/W4412093926,21,2026-11-10
+10.1093/nar/gkac947,CellMarker 2.0: an updated database of manually curated cell markers in human/mouse and web tools based on scRNA-seq data.,https://openalex.org/W4307432965,1373,2026-11-10
+10.1093/database/baz046,PanglaoDB: a web server for exploration of mouse and human single-cell RNA sequencing data.,https://openalex.org/W2931036699,1593,2026-11-10
+10.1186/s40364-023-00523-3,singleCellBase: a high-quality manually curated database of cell markers for single cell annotation across multiple species.,https://openalex.org/W4386892697,30,2026-11-10
+10.1016/j.cell.2021.01.010,A pan-cancer single-cell transcriptional atlas of tumor infiltrating myeloid cells.,https://openalex.org/W3126902084,1644,2026-11-10
+10.1038/s41467-024-50478-8,A single-cell pan-cancer analysis to show the variability of tumor-infiltrating myeloid cells in immune checkpoint blockade.,https://openalex.org/W4400867660,46,2026-11-10
+10.1016/j.immuni.2021.07.007,Cross-tissue single-cell landscape of human monocytes and macrophages in health and disease.,https://openalex.org/W3187504732,719,2026-11-10
+10.1182/blood-2010-02-258558,Nomenclature of monocytes and dendritic cells in blood.,https://openalex.org/W1984378291,2557,2026-11-10
+10.1016/j.immuni.2019.08.008,Single-Cell Analysis of Human Mononuclear Phagocytes Reveals Subset-Defining Markers and Identifies Circulating Inflammatory Dendritic Cells.,https://openalex.org/W2970751796,533,2026-11-10
+10.1016/j.immuni.2019.03.009,Single-Cell Transcriptomics of Human and Mouse Lung Cancers Reveals Conserved Myeloid Populations across Individuals and Species.,https://openalex.org/W2936414047,1501,2026-11-10
+10.1126/science.aah4573,"Single-cell RNA-seq reveals new types of human blood dendritic cells, monocytes, and progenitors.",https://openalex.org/W2605810679,2507,2026-11-10
+10.1038/s41591-018-0045-3,Global characterization of T cells in non-small-cell lung cancer by single-cell sequencing.,https://openalex.org/W2808837841,1668,2026-11-10
+10.1038/s41467-021-23324-4,Interpretation of T cell states from single-cell transcriptomics data using reference atlases.,https://openalex.org/W3162788683,558,2026-11-10
+10.1038/s41591-023-02371-y,Pan-cancer T cell atlas links a cellular stress response state to immunotherapy resistance.,https://openalex.org/W4378648463,518,2026-11-10
+10.1126/science.abe6474,Pan-cancer single-cell landscape of tumor-infiltrating T cells.,https://openalex.org/W4200468913,1450,2026-11-10
+10.1016/j.cell.2018.05.060,Single-Cell Map of Diverse Immune Phenotypes in the Breast Tumor Microenvironment.,https://openalex.org/W2810097927,2045,2026-11-10
+10.1038/s41467-019-12464-3,Single-cell transcriptomics of human T cells reveals tissue and activation signatures in health and disease.,https://openalex.org/W2980897730,757,2026-11-10
+10.1038/s41422-020-0355-0,A pan-cancer blueprint of the heterogeneous tumor microenvironment revealed by single-cell profiling.,https://openalex.org/W3036843909,845,2026-11-10
+10.1038/s41576-023-00586-w,Best practices for single-cell analysis across modalities.,https://openalex.org/W4362521490,1155,2026-11-10
+10.15252/msb.20188746,Current best practices in single-cell RNA-seq analysis: a tutorial.,https://openalex.org/W2949237386,2331,2026-11-10
+10.1101/2025.02.27.640494,"scBaseCount: an AI agent-curated, uniformly processed, and autonomously updated single cell data repository",https://openalex.org/W7213441420,50,2026-11-10
+10.1038/s41467-025-59926-5,CellFM: a large-scale foundation model pre-trained on transcriptomics of 100 million human cells.,https://openalex.org/W4410521040,118,2026-11-10
+10.1038/s41592-024-02305-7,Large-scale foundation model on single-cell transcriptomics.,https://openalex.org/W4399387478,785,2026-11-10
+10.1038/s41586-023-06139-9,Transfer learning enables predictions in network biology.,https://openalex.org/W4378838672,1400,2026-11-10
+10.1101/2023.11.28.568918,Universal Cell Embeddings: A Foundation Model for Cell Biology,https://openalex.org/W7167668826,258,2026-11-10
+10.1101/2023.04.30.538439,scGPT: Towards Building a Foundation Model for Single-Cell Multi-omics Using Generative AI,https://openalex.org/W4392168151,1694,2026-11-10
+10.64898/2026.09.23.753765,AI Models Excel at Orchestration but Falter at Biological Judgment: Findings from an Agentic Gene Annotation Study,https://openalex.org/W7214282536,0,2026-11-10
+10.1101/2025.05.30.656746,Biomni: A General-Purpose Biomedical AI Agent,https://openalex.org/W7167845123,289,2026-11-10
+10.1101/2023.09.11.557287,Cell2Sentence: Teaching Large Language Models the Language of Biology,https://openalex.org/W4386791134,78,2026-11-10
+10.1101/2025.03.17.643771,CompBioAgent  : An LLM-powered agent for single-cell RNA-seq data exploration,https://openalex.org/W4408839296,8,2026-11-10
+10.1101/2023.10.16.562533,GenePT: A Simple But Effective Foundation Model for Genes and Cells Built From ChatGPT,https://openalex.org/W4405114593,205,2026-11-10
+10.1038/s41587-025-02857-9,Multimodal learning enables chat-based exploration of single-cell data.,https://openalex.org/W4416103085,66,2026-11-10
+10.1002/aic.70285,scChat: A Large Language Model-Powered Co-Pilot for Contextualized Single-Cell RNA Sequencing Analysis.,https://openalex.org/W7128591464,12,2026-11-10
+10.48550/arXiv.2602.11609,scPilot: Large Language Model Reasoning Toward Automated Single-Cell Analysis and Discovery,https://openalex.org/W7128770448,2,2026-11-10
+10.1186/s13326-016-0088-7,"The Cell Ontology 2016: enhanced content, modularization, and ontology interoperability.",https://openalex.org/W2462007197,356,2026-11-10
+10.1093/nar/gkaa1020,TISCH: a comprehensive web resource enabling interactive single-cell transcriptome visualization of tumor microenvironment.,https://openalex.org/W3103119004,1090,2026-11-10
+10.1038/s41592-021-01336-8,Benchmarking atlas-level data integration in single-cell genomics.,https://openalex.org/W4225598893,1537,2026-11-10
+10.1038/s41587-020-0469-4,Benchmarking single-cell RNA-sequencing protocols for cell atlas projects.,https://openalex.org/W2946232537,509,2026-11-10
+10.1093/bioinformatics/btz363,Comprehensive evaluation of transcriptome-based cell-type quantification methods for immuno-oncology.,https://openalex.org/W2953757801,950,2026-11-10
+10.1002/cam4.2113,Dissecting intratumoral myeloid cell plasticity by single cell RNA-seq.,https://openalex.org/W2943598479,162,2026-11-10
+10.3389/fimmu.2019.02035,Human Monocyte Subsets and Phenotypes in Major Chronic Inflammatory Diseases.,https://openalex.org/W2967035454,942,2026-11-10
+10.7554/elife.76339,A CD4+ T cell reference map delineates subtype-specific adaptation during acute and chronic viral infections.,https://openalex.org/W4285085644,54,2026-11-10
+10.1038/s41467-022-35238-w,A comprehensive single-cell map of T cell exhaustion-associated immune environments in human breast cancer.,https://openalex.org/W4313645964,242,2026-11-10
+10.1038/s41591-019-0522-3,Clonal replacement of tumor-specific T cells following PD-1 blockade.,https://openalex.org/W2966465234,1561,2026-11-10
+10.1016/j.cell.2018.10.038,Defining T Cell States Associated with Response to Checkpoint Immunotherapy in Melanoma.,https://openalex.org/W2899145148,2075,2026-11-10

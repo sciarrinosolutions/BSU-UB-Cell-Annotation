@@ -1,0 +1,102 @@
+doi,title,relevance,rule,reason,markers_defined
+10.1093/nar/gkac947,CellMarker 2.0: an updated database of manually curated cell markers in human/mouse and web tools based on scRNA-seq data.,preferred,4,Curated marker database; direct source of marker rules,yes
+10.1093/database/baz046,PanglaoDB: a web server for exploration of mouse and human single-cell RNA sequencing data.,preferred,4,Marker database with per-marker sensitivity/specificity,yes
+10.1186/s40364-023-00523-3,singleCellBase: a high-quality manually curated database of cell markers for single cell annotation across multiple species.,preferred,4,Curated multi-species marker database,yes
+10.1038/s41467-025-60900-4,Cell Marker Accordion: interpretable single-cell and spatial omics annotation in health and disease.,preferred,3,Annotation tool built on a weighted consensus marker database,yes
+10.1126/sciadv.abh2169,A single-cell type transcriptomics map of human tissues.,preferred,4,Human Protein Atlas cell-type-enriched genes across healthy tissues,yes
+10.1186/s13326-016-0088-7,"The Cell Ontology 2016: enhanced content, modularization, and ontology interoperability.",caution,5,"Label vocabulary (Cell Ontology), not an algorithm or marker set (needs review)",no
+10.1038/s41467-022-28803-w,Fully-automated and ultra-fast cell-type identification using specific marker combinations from single-cell transcriptomic data.,preferred,3,scType: marker-combination annotation algorithm with positive and negative markers,yes
+10.1093/bioinformatics/btac141,scGate: marker-based purification of cell types from heterogeneous single-cell RNA-seq datasets.,preferred,3,scGate: hierarchical marker-gating algorithm for immune cells,yes
+10.1038/s41592-019-0529-1,Probabilistic cell-type assignment of single-cell RNA-seq for tumor microenvironment profiling.,preferred,3,CellAssign: probabilistic marker-based annotation built for the tumor microenvironment,no
+10.3390/genes10070531,SCINA: A Semi-Supervised Subtyping Algorithm of Single Cells and Bulk Samples.,preferred,3,SCINA: semi-supervised marker-set annotation algorithm,no
+10.3389/fgene.2020.00490,SCSA: A Cell Type Annotation Tool for Single-Cell RNA-seq Data.,preferred,3,SCSA: marker-score annotation algorithm,no
+10.1016/j.isci.2020.100882,scCATCH: Automatic Annotation on Cell Types of Clusters from Single-Cell RNA Sequencing Data.,preferred,3,scCATCH: evidence-based marker scoring for cluster annotation,no
+10.1038/s41592-019-0535-3,Supervised classification enables rapid annotation of cell atlases.,preferred,3,Garnett: hierarchical marker-file classifier,yes
+10.1093/bioadv/vbad029,EasyCellType: marker-based cell-type annotation by automatically querying multiple databases.,preferred,3,EasyCellType: marker annotation querying multiple databases,no
+10.1093/nar/gkz543,"CHETAH: a selective, hierarchical cell type identification method for single-cell RNA sequencing.",preferred,3,CHETAH: hierarchical annotation with explicit unassigned calls,no
+10.1038/s41590-018-0276-y,Reference-based analysis of lung single-cell sequencing reveals a transitional profibrotic macrophage.,preferred,3,SingleR reference-based algorithm; the lung fibrosis application is only the test case (rule 1 exception),no
+10.1016/j.cell.2021.04.048,Integrated analysis of multimodal single-cell data.,preferred,3,Seurat v4/Azimuth reference mapping with a protein-validated PBMC reference,no
+10.1126/science.abl5197,Cross-tissue immune cell analysis reveals tissue-specific features in humans.,preferred,3,CellTypist: immune annotation models plus a curated immune cell encyclopedia,yes
+10.1186/s13059-019-1862-5,scPred: accurate supervised method for cell-type classification from single-cell RNA-seq data.,preferred,3,scPred: supervised annotation classifier,no
+10.1038/s41587-021-01001-7,Mapping single-cell data to reference atlases by transfer learning.,preferred,3,scArches: reference mapping by transfer learning,no
+10.15252/msb.20209620,Probabilistic harmonization and annotation of single-cell transcriptomics data with deep generative models.,preferred,3,scANVI: semi-supervised label transfer,no
+10.1038/s41596-021-00534-0,Tutorial: guidelines for annotating single-cell transcriptomic maps using automated and manual methods.,preferred,3,"Guidelines for automated and manual annotation; paywalled, so it can't be ingested",no
+10.1016/j.csbj.2021.01.015,Automated methods for cell type annotation on scRNA-seq data.,preferred,3,Review of annotation algorithm families,no
+10.1038/s41576-023-00586-w,Best practices for single-cell analysis across modalities.,caution,5,General scRNA-seq best-practices review; annotation is one section,no
+10.15252/msb.20188746,Current best practices in single-cell RNA-seq analysis: a tutorial.,caution,5,General scRNA-seq workflow tutorial,no
+10.1093/bib/bbaf207,An overview of computational methods in single-cell transcriptomic cell type annotation.,preferred,3,Recent overview of annotation algorithms,no
+10.1186/s13059-019-1795-z,A comparison of automatic cell identification methods for single-cell RNA sequencing data.,preferred,3,Standard benchmark of 22 annotation classifiers,no
+10.1016/j.gpb.2020.07.004,Evaluation of Cell Type Annotation R Packages on Single-cell RNA-seq Data.,preferred,3,Benchmark of R annotation packages,no
+10.1093/bib/bbz096,Evaluation of single-cell classifiers for single-cell RNA sequencing data sets.,preferred,3,Benchmark of single-cell classifiers,no
+10.12688/f1000research.18490.3,Evaluation of methods to assign cell type labels to cell clusters from single-cell RNA-sequencing data.,preferred,3,Benchmark of marker-based cluster labeling,no
+10.1186/s13059-021-02480-2,"Evaluation of some aspects in supervised cell type identification for single-cell RNA-seq: classifier, feature selection, and reference construction.",preferred,3,Benchmark of supervised annotation design choices,no
+10.1186/s13059-024-03183-0,A comparison of marker gene selection methods for single-cell RNA sequencing data.,preferred,3,Benchmark of methods for deriving marker genes,no
+10.1038/s41592-021-01336-8,Benchmarking atlas-level data integration in single-cell genomics.,later,2,About data integration rather than annotation; label metrics may be reused later (needs review),no
+10.1186/s13059-025-03574-x,Zero-shot evaluation reveals limitations of single-cell foundation models.,preferred,3,Evaluation of foundation models for annotation; documents their gaps,no
+10.1093/bioinformatics/btz363,Comprehensive evaluation of transcriptome-based cell-type quantification methods for immuno-oncology.,later,2,Bulk deconvolution benchmark in immuno-oncology; not scRNA-seq annotation (needs review),no
+10.1038/s41587-020-0469-4,Benchmarking single-cell RNA-sequencing protocols for cell atlas projects.,later,2,Compares sequencing protocols rather than annotation,no
+10.1038/ncomms14049,Massively parallel digital transcriptional profiling of single cells.,preferred,3,PBMC with FACS-sorted populations as ground truth,no
+10.1038/nmeth.4380,Simultaneous epitope and transcriptome measurement in single cells.,preferred,3,CITE-seq protein ground truth for immune labels,no
+10.1038/nbt.4042,Multiplexed droplet single-cell RNA-sequencing using natural genetic variation.,preferred,3,Stimulated-PBMC benchmark data; lupus donors fall under the rule 1 exception (open question for Dr. Talkington) (needs review),no
+10.1038/s41587-020-0465-8,Systematic comparison of single-cell and single-nucleus RNA-sequencing methods.,preferred,3,PBMC benchmark across sequencing technologies,no
+10.1126/science.abl4896,"The Tabula Sapiens: A multiple-organ, single-cell transcriptomic atlas of humans.",preferred,3,Expert-annotated multi-organ healthy reference,no
+10.1093/nar/gkae1142,"CZ CELLxGENE Discover: a single-cell data platform for scalable exploration, analysis and modeling of aggregated data.",preferred,3,Labeled data platform using Cell Ontology IDs,no
+10.1093/nar/gkac959,TISCH2: expanded datasets and new tools for single-cell transcriptome analyses of the tumor microenvironment.,preferred,3,Uniformly annotated tumor microenvironment datasets,no
+10.1101/gr.273300.120,A single-cell tumor immune atlas for precision oncology.,preferred,3,Pan-cancer immune reference atlas with defined immune subsets,yes
+10.1038/s41592-024-02235-4,Assessing GPT-4 for cell type annotation in single-cell RNA-seq analysis.,preferred,3,"GPT-4 annotation from marker lists, benchmarked against manual labels",no
+10.1038/s41467-025-67084-x,CASSIA: a multi-agent large language model for automated and interpretable cell annotation.,preferred,3,Multi-agent LLM annotation with validation agents,no
+10.1101/2024.05.13.593861,CellAgent: LLM-Driven Multi-Agent Framework for Natural Language-Based Single-Cell Analysis,preferred,3,"Multi-agent LLM framework for scRNA-seq analysis, including annotation",no
+10.48550/arXiv.2504.04698,scAgent: Universal Single-Cell Annotation via a LLM Agent,preferred,3,LLM agent for annotation,no
+10.48550/arXiv.2505.08844,CellTypeAgent: Trustworthy cell type annotation with Large Language Models,preferred,3,Agent annotation verified against expression data; Dr. Talkington's 'useful' example,no
+10.1038/s41467-025-64511-x,Benchmarking cell type and gene set annotation by large language models with AnnDictionary.,preferred,3,Benchmark of many LLMs for annotation,no
+10.1038/s42003-025-08745-x,Evaluation of cell type annotation reliability using a large language model-based identifier.,preferred,3,Multi-LLM annotation with an objective credibility check,no
+10.1038/s42003-026-10420-8,Large language model consensus substantially improves the cell type annotation accuracy for scRNA-seq data.,preferred,3,Multi-LLM consensus annotation,no
+10.1101/2025.05.30.656746,Biomni: A General-Purpose Biomedical AI Agent,caution,5,General-purpose biomedical agent; annotation is one of many tasks,no
+10.1038/s41587-025-02857-9,Multimodal learning enables chat-based exploration of single-cell data.,caution,5,Chat-based exploration of single-cell data; not annotation-focused (needs review),no
+10.1101/2023.10.16.562533,GenePT: A Simple But Effective Foundation Model for Genes and Cells Built From ChatGPT,caution,3,Foundation model not specific to annotation (open question for Dr. Talkington) (needs review),no
+10.1101/2023.09.11.557287,Cell2Sentence: Teaching Large Language Models the Language of Biology,caution,3,Foundation model not specific to annotation (open question for Dr. Talkington) (needs review),no
+10.1002/aic.70285,scChat: A Large Language Model-Powered Co-Pilot for Contextualized Single-Cell RNA Sequencing Analysis.,caution,5,LLM co-pilot for general scRNA-seq analysis (needs review),no
+10.1101/2023.04.30.538439,scGPT: Towards Building a Foundation Model for Single-Cell Multi-omics Using Generative AI,caution,3,Foundation model not specific to annotation (open question for Dr. Talkington) (needs review),no
+10.1038/s41586-023-06139-9,Transfer learning enables predictions in network biology.,caution,3,Foundation model aimed at network biology rather than annotation (needs review),no
+10.1101/2021.12.05.471261,scBERT as a Large-scale Pretrained Deep Language Model for Cell Type Annotation of Single-cell RNA-seq Data,preferred,3,Pretrained language model built specifically for cell type annotation,no
+10.1101/2023.11.28.568918,Universal Cell Embeddings: A Foundation Model for Cell Biology,caution,3,Foundation model not specific to annotation (open question for Dr. Talkington) (needs review),no
+10.1038/s41592-024-02305-7,Large-scale foundation model on single-cell transcriptomics.,caution,3,Foundation model not specific to annotation (open question for Dr. Talkington) (needs review),no
+10.1038/s41467-023-35923-4,Transformer for one stop interpretable cell type annotation.,preferred,3,TOSICA: interpretable transformer for cell type annotation,no
+10.1038/s41467-025-59926-5,CellFM: a large-scale foundation model pre-trained on transcriptomics of 100 million human cells.,caution,3,Foundation model not specific to annotation (open question for Dr. Talkington) (needs review),no
+10.1126/science.aah4573,"Single-cell RNA-seq reveals new types of human blood dendritic cells, monocytes, and progenitors.",preferred,4,Defines blood monocyte and DC subsets with markers,yes
+10.1182/blood-2010-02-258558,Nomenclature of monocytes and dendritic cells in blood.,preferred,4,"Defines classical, intermediate and non-classical monocytes",yes
+10.1016/j.immuni.2019.08.008,Single-Cell Analysis of Human Mononuclear Phagocytes Reveals Subset-Defining Markers and Identifies Circulating Inflammatory Dendritic Cells.,preferred,4,"Subset-defining markers for monocytes vs. DCs; paywalled, so it can't be ingested",yes
+10.1016/j.immuni.2021.07.007,Cross-tissue single-cell landscape of human monocytes and macrophages in health and disease.,preferred,4,"Cross-tissue monocyte/macrophage marker reference; paywalled, so it can't be ingested",yes
+10.3389/fimmu.2019.02035,Human Monocyte Subsets and Phenotypes in Major Chronic Inflammatory Diseases.,later,1,"Monocyte subset markers, but set in non-cancer inflammatory disease (open question for Dr. Talkington) (needs review)",yes
+10.1016/j.cell.2021.01.010,A pan-cancer single-cell transcriptional atlas of tumor infiltrating myeloid cells.,preferred,4,"Pan-cancer myeloid subsets with markers; paywalled, so it can't be ingested",yes
+10.1016/j.immuni.2019.03.009,Single-Cell Transcriptomics of Human and Mouse Lung Cancers Reveals Conserved Myeloid Populations across Individuals and Species.,preferred,4,"Myeloid populations conserved across lung cancers, with markers",yes
+10.1002/cam4.2113,Dissecting intratumoral myeloid cell plasticity by single cell RNA-seq.,later,2,Focused on one process (myeloid plasticity),no
+10.1038/s41467-021-23324-4,Interpretation of T cell states from single-cell transcriptomics data using reference atlases.,preferred,3,ProjecTILs: T cell reference atlas plus projection algorithm,yes
+10.7554/elife.76339,A CD4+ T cell reference map delineates subtype-specific adaptation during acute and chronic viral infections.,later,1,Non-cancer setting and one specific subtype; Dr. Talkington's 'less useful' example,yes
+10.1126/science.abe6474,Pan-cancer single-cell landscape of tumor-infiltrating T cells.,preferred,4,"Pan-cancer T cell states with markers; paywalled, so it can't be ingested",yes
+10.1038/s41591-023-02371-y,Pan-cancer T cell atlas links a cellular stress response state to immunotherapy resistance.,preferred,4,Pan-cancer T cell atlas defining T cell states,yes
+10.1038/s41467-019-12464-3,Single-cell transcriptomics of human T cells reveals tissue and activation signatures in health and disease.,preferred,4,Human T cell tissue and activation signatures in healthy donors,yes
+10.1038/s41591-018-0045-3,Global characterization of T cells in non-small-cell lung cancer by single-cell sequencing.,preferred,4,Defines T cell clusters in NSCLC with markers,yes
+10.1016/j.cell.2018.10.038,Defining T Cell States Associated with Response to Checkpoint Immunotherapy in Melanoma.,later,2,Focused on one process (response to checkpoint immunotherapy),no
+10.1038/s41591-019-0522-3,Clonal replacement of tumor-specific T cells following PD-1 blockade.,later,2,Focused on one process (clonal replacement after PD-1 blockade),no
+10.1038/s41467-022-35238-w,A comprehensive single-cell map of T cell exhaustion-associated immune environments in human breast cancer.,later,2,Focused on one state (exhaustion) in one cancer,no
+10.1016/j.cell.2018.05.060,Single-Cell Map of Diverse Immune Phenotypes in the Breast Tumor Microenvironment.,preferred,4,Defines immune cell clusters in the breast tumor microenvironment,yes
+10.1038/s41422-020-0355-0,A pan-cancer blueprint of the heterogeneous tumor microenvironment revealed by single-cell profiling.,preferred,4,Pan-cancer tumor microenvironment cell types with markers,yes
+10.1093/nar/gkaa1020,TISCH: a comprehensive web resource enabling interactive single-cell transcriptome visualization of tumor microenvironment.,caution,5,Superseded by TISCH2,no
+10.1186/s13059-026-03998-z,Benchmarking LLM-based agents for single-cell omics analysis.,preferred,3,Benchmark of LLM agents on single-cell tasks,no
+10.48550/arXiv.2412.02915,Single-Cell Omics Arena: A Benchmark Study for Large Language Models on Cell Type Annotation Using Single-Cell Data,preferred,3,LLM annotation benchmark,no
+10.48550/arXiv.2409.15678,Objectively Evaluating the Reliability of Cell Type Annotation Using LLM-Based Strategies,preferred,3,Reliability evaluation of LLM annotation,no
+10.1101/2025.02.11.637659,Beyond the Hype: The Complexity of Automated Cell Type Annotations with GPT-4,preferred,3,Critical evaluation of GPT-4 annotation failure modes,no
+10.48550/arXiv.2505.07865,CellVerse: Do Large Language Models Really Understand Cell Biology?,preferred,3,"Benchmark of LLM cell biology knowledge, including annotation",no
+10.1101/2025.11.06.686964,Multi-agent AI enables evidence-based cell annotation in single-cell transcriptomics,preferred,3,Multi-agent evidence-based annotation,no
+10.48550/arXiv.2505.00017,ReCellTy: Domain-Specific Knowledge Graph Retrieval-Augmented LLMs Reasoning Workflow for Single-Cell Annotation,preferred,3,Knowledge-graph retrieval workflow for annotation,no
+10.1371/journal.pcbi.1014291,scHilda: Hierarchical Integration of LLM with KG database for single cell type annotation.,preferred,3,Hierarchical LLM plus knowledge-graph annotation,no
+10.1186/s13040-026-00593-7,Integrative evidence-knowledge marker selection enhances LLM-based cell type annotation in single-cell RNA-seq analysis.,preferred,3,Marker selection strategy for LLM annotation,no
+10.64898/2026.07.06.736807,CellPilot: an agentic framework that pilots small language models through autonomous single-cell annotation,preferred,3,Agentic annotation with small language models,no
+10.1101/2025.03.17.643771,CompBioAgent  : An LLM-powered agent for single-cell RNA-seq data exploration,caution,5,Agent for general scRNA-seq exploration; not annotation-focused (needs review),no
+10.48550/arXiv.2602.11609,scPilot: Large Language Model Reasoning Toward Automated Single-Cell Analysis and Discovery,caution,5,LLM reasoning for general single-cell analysis (needs review),no
+10.48550/arXiv.2602.13346,CellMaster: Collaborative Cell Type Annotation in Single-Cell Analysis,preferred,3,Collaborative human-AI annotation,no
+10.1093/bib/bbag151,AICellType: a large language model-based platform for accurate cell type annotation.,preferred,3,LLM annotation platform,no
+10.64898/2026.09.23.753765,AI Models Excel at Orchestration but Falter at Biological Judgment: Findings from an Agentic Gene Annotation Study,caution,5,Agents applied to gene annotation (not cells); useful as evidence of agent gaps,no
+10.1101/2025.02.27.640494,"scBaseCount: an AI agent-curated, uniformly processed, and autonomously updated single cell data repository",caution,5,Agent-curated data repository; cell labels not confirmed (needs review),no
+10.1038/s41467-024-50478-8,A single-cell pan-cancer analysis to show the variability of tumor-infiltrating myeloid cells in immune checkpoint blockade.,preferred,4,Pan-cancer tumor-infiltrating myeloid subsets in the immune checkpoint setting (needs review),yes
