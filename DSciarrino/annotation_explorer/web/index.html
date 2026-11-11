@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Annotation Explorer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <h1>Annotation Explorer</h1>
+        <p class="sub">scRNA-seq cell annotation literature · ranked by the Talkington screening rules</p>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar" aria-label="Ranked papers">
+      <div class="controls">
+        <input type="search" id="search" placeholder="Search title, author, tool…" aria-label="Search papers">
+        <div class="chips" id="tier-filter" role="group" aria-label="Filter by tier"></div>
+        <label class="toggle"><input type="checkbox" id="ingested-only"> Ingested only</label>
+        <div id="active-filter"></div>
+      </div>
+      <ol class="paper-list" id="paper-list"></ol>
+    </aside>
+
+    <div class="gutter gutter-v" id="gutter-side" role="separator" aria-orientation="vertical"
+         aria-label="Resize paper list (arrow keys; double-click to reset)" tabindex="0"></div>
+
+    <section class="panel panel-top" aria-label="Enhanced abstract">
+      <div id="abstract" class="abstract"></div>
+    </section>
+
+    <div class="gutter gutter-h" id="gutter-panels" role="separator" aria-orientation="horizontal"
+         aria-label="Resize abstract and workflow panels (arrow keys; double-click to reset)" tabindex="0"></div>
+
+    <section class="panel panel-bottom" aria-label="Relation to the annotation workflow">
+      <div class="panel-head">
+        <div class="head-left">
+          <h2 id="workflow-title">Where it fits in the scRNA-seq workflow</h2>
+          <div class="segmented" id="view-toggle" role="group" aria-label="Workflow view"></div>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="workflow">
+        <div class="diagram-wrap"><svg id="diagram" viewBox="0 0 760 300" role="img" aria-label="scRNA-seq workflow diagram"></svg></div>
+        <div class="gutter gutter-v" id="gutter-workflow" role="separator" aria-orientation="vertical"
+             aria-label="Resize diagram and step details (arrow keys; double-click to reset)" tabindex="0"></div>
+        <div class="stage-detail" id="stage-detail"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="layout.js"></script>
+</body>
+</html>

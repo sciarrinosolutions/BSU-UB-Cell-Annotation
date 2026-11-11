@@ -1,0 +1,88 @@
+{
+  "id": "10-1126-science-abl5197",
+  "doi": "10.1126/science.abl5197",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text (author manuscript)", "url": "https://europepmc.org/article/PMC/PMC7612735"}
+    ],
+    "notes": "CellTypist model details are in the Supplementary Text, which wasn't read. Marker genes below are those named in the main text."
+  },
+  "enhanced_abstract": {
+    "tldr": "A 360,000-cell scRNA-seq + VDJ atlas of immune cells from 16 tissues of 12 organ donors, annotated with CellTypist, a fast logistic-regression classifier trained on harmonized immune labels from 20 tissues that now covers 101 immune cell types.",
+    "sections": [
+      {"heading": "Goal", "body": "Map immune cell types across human tissues (not just blood) at fine resolution, and build an automated, updatable way to annotate immune cells consistently across datasets."},
+      {"heading": "CellTypist", "body": "Immune cells from 19 published datasets across 20 tissues were given harmonized labels at two levels: 32 broad types and 91 fine types. L2-regularized logistic regression trained with stochastic gradient descent in mini-batches, then retrained on the union of the top 300 genes per cell type. Precision, recall and F1 were around 0.9 at both levels, and it held up against sparse data and batch effects. Cell types with more training cells were predicted more accurately."},
+      {"heading": "Atlas", "body": "16 tissues from 12 deceased donors, including bone marrow, spleen, lymph nodes, blood, gut, lung and liver; 357,211 cells passed QC. CellTypist plus manual curation resolved 43 cell states, with T and B cell receptor sequencing tracking clones across tissues. The 41 cell types found were fed back into CellTypist, which now has 101 annotated types."},
+      {"heading": "Myeloid findings", "body": "Separated monocytes from macrophages, which often blur together in scRNA-seq. Classical and non-classical monocytes differed in CD14, FCGR3A and CX3CR1. Macrophages were strongly tissue-specific (alveolar, erythrophagocytic, intestinal), and three DC subsets were resolved (DC1, DC2, migratory DCs)."},
+      {"heading": "T cell findings", "body": "Separated naive/central-memory, Tfh, Treg, effector-memory and tissue-resident Th1/Th17 CD4 T cells; three memory CD8 subsets (gut-resident, effector-memory/TEMRA, Trm/em); MAIT cells; two γδ populations; NK and ILC3. Expanded clones were mostly tissue-resident memory cells, and the largest clones spread across five or more tissues."}
+    ],
+    "key_findings": [
+      "A pretrained, organ-agnostic immune classifier with ~0.9 F1 at both broad and fine levels",
+      "The reference can be updated: new curated types are fed back into the model",
+      "Many immune subsets are tissue-restricted, so a blood-only reference misses them",
+      "Main text gives explicit marker sets for monocyte, DC and T cell subsets"
+    ],
+    "limitations": [
+      "Healthy organ donors only; no tumor tissue",
+      "Accuracy is lower for cell types with few training cells",
+      "Fine subtypes still needed manual curation on top of automatic labels"
+    ],
+    "why_it_matters": "Rule 3 (algorithm, preferred) and a marker source (rule 4). CellTypist is a strong reference-based baseline for immune annotation, and this paper gives explicit markers for the group's two focus lineages, monocytes and T cells. It covers healthy tissue rather than cancer, so tumor-specific states need other sources."
+  },
+  "links": {
+    "code": [
+      {"label": "CellTypist (GitHub)", "url": "https://github.com/Teichlab/celltypist"},
+      {"label": "CellTypist website and models", "url": "https://www.celltypist.org/"},
+      {"label": "Analysis code (Zenodo)", "url": "https://doi.org/10.5281/zenodo.6334988"}
+    ],
+    "datasets": [
+      {"label": "Raw data E-MTAB-11536 (ArrayExpress)", "url": "https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-11536"},
+      {"label": "Processed atlas (Tissue Immune Cell Atlas)", "url": "https://www.tissueimmunecellatlas.org"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "used", "summary": "10x Genomics Chromium 5′ (v1/v2) and 3′ (v3) scRNA-seq plus paired TCRαβ, TCRγδ and BCR libraries; HiSeq 4000 / NovaSeq 6000.", "methods": ["10x 5′ and 3′ scRNA-seq", "scVDJ-seq (TCR, BCR)"], "tools": ["10x Genomics Chromium"]},
+    "quantification": {"involvement": "used", "summary": "Alignment and counting with Cell Ranger 6.1.1; VDJ with cellranger-vdj and a custom γδ pipeline (dandelion).", "tools": ["Cell Ranger", "cellranger-vdj", "dandelion"]},
+    "preprocessing": {"involvement": "used", "summary": "Removed cells with <1,000 UMIs and <600 genes; doublets with Scrublet; hashtag demultiplexing with Hashsolo; normalization in Scanpy.", "methods": ["QC filtering", "Doublet detection", "Demultiplexing", "Normalization"], "tools": ["Scrublet", "Hashsolo", "Scanpy"]},
+    "dimensionality_reduction": {"involvement": "used", "summary": "Standard Scanpy workflow (details in the supplement).", "tools": ["Scanpy"]},
+    "batch_correction": {"involvement": "used", "summary": "Integration with BBKNN and scVI, compared with kBET; CellTypist itself was robust to batch effects.", "methods": ["BBKNN", "scVI", "kBET evaluation"], "tools": ["BBKNN", "scVI", "kBET"]},
+    "clustering": {"involvement": "used", "summary": "Graph-based clustering in Scanpy, followed by manual sub-clustering of compartments.", "tools": ["Scanpy"]},
+    "annotation": {"involvement": "core", "summary": "CellTypist logistic-regression models at broad (32 types) and fine (91 types) levels, then manual curation with known markers and cross-validation in independent datasets; curated types fed back to update the model.", "methods": ["L2-regularized logistic regression (SGD, mini-batch)", "Two-level label hierarchy", "Top-300-genes feature selection", "Manual curation with markers", "Model updating with new labels"], "tools": ["CellTypist"]},
+    "trajectory": {"involvement": "none", "summary": "Not addressed."},
+    "cell_communication": {"involvement": "none", "summary": "Not addressed (TCR clonal sharing across tissues is analyzed instead)."}
+  },
+  "algorithms": [
+    {"name": "CellTypist logistic regression", "role": "proposed", "description": "L2-regularized, trained by stochastic gradient descent on harmonized immune labels."},
+    {"name": "BBKNN", "role": "used"},
+    {"name": "scVI", "role": "used"},
+    {"name": "Scrublet", "role": "used"}
+  ],
+  "tools": [
+    {"name": "CellTypist", "role": "proposed", "language": "Python", "url": "https://github.com/Teichlab/celltypist"},
+    {"name": "Scanpy", "role": "used", "language": "Python"},
+    {"name": "Cell Ranger", "role": "used"},
+    {"name": "scirpy", "role": "used", "language": "Python"},
+    {"name": "dandelion", "role": "used", "language": "Python"}
+  ],
+  "cell_types": [
+    {"name": "Classical monocyte", "positive_markers": ["CD14"], "context": "Distinguished from non-classical monocytes by CD14, FCGR3A and CX3CR1 (human tissues)"},
+    {"name": "Non-classical monocyte", "positive_markers": ["FCGR3A", "CX3CR1"], "context": "Found in lung and liver, absent from jejunum"},
+    {"name": "Alveolar macrophage", "positive_markers": ["GPNMB", "TREM2"], "context": "Lung"},
+    {"name": "Erythrophagocytic macrophage (red pulp / Kupffer)", "positive_markers": ["CD5L", "SLC40A1", "SPIC"], "context": "Spleen and liver"},
+    {"name": "Intestinal macrophage", "positive_markers": ["CD209", "IGF1"], "context": "Gut"},
+    {"name": "DC1 (cDC1)", "positive_markers": ["XCR1", "CLEC9A"]},
+    {"name": "DC2 (cDC2)", "positive_markers": ["CD1C", "CLEC10A"]},
+    {"name": "Migratory DC", "positive_markers": ["CCR7", "LAMP3"], "context": "Enriched in lymph nodes"},
+    {"name": "Naive / central memory T cell", "positive_markers": ["CCR7", "SELL"], "context": "Mainly lymphoid sites"},
+    {"name": "Follicular helper T cell (Tfh)", "positive_markers": ["CXCR5"]},
+    {"name": "Regulatory T cell (Treg)", "positive_markers": ["FOXP3", "CTLA4"]},
+    {"name": "Tissue-resident memory Th1/Th17 and CD8 Trm (gut)", "positive_markers": ["CCR9", "ITGAE", "ITGA1"], "context": "Intestine and lung"},
+    {"name": "CD8 effector memory / TEMRA", "positive_markers": ["CX3CR1"], "context": "Blood-rich sites; absent from lymph nodes and gut"},
+    {"name": "CD8 Trm/em", "positive_markers": ["CRTAM"], "context": "Spleen, bone marrow"},
+    {"name": "MAIT cell", "positive_markers": ["TRAV1-2", "SLC4A10"]},
+    {"name": "γδ T cell (CRTAM+)", "positive_markers": ["CRTAM", "IKZF2", "ITGAD"], "context": "Spleen, bone marrow, liver"},
+    {"name": "NK cell", "positive_markers": ["FCGR3A", "NCAM1"], "context": "Two clusters, high in either CD16 or CD56"}
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ingested_paper.schema.json",
+  "title": "Ingested paper",
+  "description": "What the ingestion agent writes for one paper (ingested/<id>.json). See AGENT_INGEST.md.",
+  "type": "object",
+  "required": ["id", "doi", "ingestion", "enhanced_abstract", "links", "workflow"],
+  "additionalProperties": false,
+  "definitions": {
+    "link": {
+      "type": "object",
+      "required": ["label", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "label": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "pattern": "^https?://"}
+      }
+    },
+    "stage": {
+      "type": "object",
+      "required": ["involvement", "summary"],
+      "additionalProperties": false,
+      "properties": {
+        "involvement": {
+          "description": "core = the paper's main contribution is at this step; used = the paper performs this step with existing methods; mentioned = discussed only; none = not addressed; unknown = can't tell from the sources read (e.g. abstract only).",
+          "enum": ["core", "used", "mentioned", "none", "unknown"]
+        },
+        "summary": {"type": "string"},
+        "methods": {"type": "array", "items": {"type": "string"}},
+        "tools": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  },
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+    "doi": {"type": "string"},
+    "ingestion": {
+      "type": "object",
+      "required": ["agent", "date", "sources"],
+      "additionalProperties": false,
+      "properties": {
+        "agent": {"type": "string"},
+        "date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+        "sources": {
+          "description": "What the agent actually read (e.g. abstract, full text, methods).",
+          "type": "array", "minItems": 1, "items": {"$ref": "#/definitions/link"}
+        },
+        "notes": {"type": "string"}
+      }
+    },
+    "enhanced_abstract": {
+      "type": "object",
+      "required": ["tldr", "sections", "why_it_matters"],
+      "additionalProperties": false,
+      "properties": {
+        "tldr": {"type": "string", "minLength": 1},
+        "sections": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["heading", "body"],
+            "additionalProperties": false,
+            "properties": {
+              "heading": {"type": "string"},
+              "body": {"type": "string"}
+            }
+          }
+        },
+        "key_findings": {"type": "array", "items": {"type": "string"}},
+        "limitations": {"type": "array", "items": {"type": "string"}},
+        "why_it_matters": {
+          "description": "Relevance to the project, in terms of the SKILLS.md rules.",
+          "type": "string"
+        }
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {"type": "array", "items": {"$ref": "#/definitions/link"}},
+        "datasets": {"type": "array", "items": {"$ref": "#/definitions/link"}},
+        "other": {"type": "array", "items": {"$ref": "#/definitions/link"}}
+      }
+    },
+    "workflow": {
+      "description": "How the paper relates to each step of the scRNA-seq annotation workflow.",
+      "type": "object",
+      "required": [
+        "sequencing", "quantification", "preprocessing", "dimensionality_reduction",
+        "batch_correction", "clustering", "annotation", "trajectory", "cell_communication"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "sequencing": {"$ref": "#/definitions/stage"},
+        "quantification": {"$ref": "#/definitions/stage"},
+        "preprocessing": {"$ref": "#/definitions/stage"},
+        "dimensionality_reduction": {"$ref": "#/definitions/stage"},
+        "batch_correction": {"$ref": "#/definitions/stage"},
+        "clustering": {"$ref": "#/definitions/stage"},
+        "annotation": {"$ref": "#/definitions/stage"},
+        "trajectory": {"$ref": "#/definitions/stage"},
+        "cell_communication": {"$ref": "#/definitions/stage"}
+      }
+    },
+    "algorithms": {
+      "description": "Named algorithms or models the paper proposes or relies on.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "role"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string"},
+          "role": {"enum": ["proposed", "used", "compared"]},
+          "description": {"type": "string"}
+        }
+      }
+    },
+    "tools": {
+      "description": "Software packages, databases or services.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "role"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string"},
+          "role": {"enum": ["proposed", "used", "compared"]},
+          "language": {"type": "string"},
+          "url": {"type": "string", "pattern": "^https?://"}
+        }
+      }
+    },
+    "cell_types": {
+      "description": "Explicit marker definitions given by the paper (seed material for annotation rules). Leave empty if none.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "positive_markers"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string"},
+          "positive_markers": {"type": "array", "items": {"type": "string"}},
+          "negative_markers": {"type": "array", "items": {"type": "string"}},
+          "context": {"type": "string"}
+        }
+      }
+    }
+  }
+}

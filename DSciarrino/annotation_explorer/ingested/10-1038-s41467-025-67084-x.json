@@ -1,0 +1,67 @@
+{
+  "id": "10-1038-s41467-025-67084-x",
+  "doi": "10.1038/s41467-025-67084-x",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text (results, discussion, methods, data and code availability)", "url": "https://europepmc.org/article/PMC/PMC12796229"}
+    ],
+    "notes": "Supplementary notes and data files were not read."
+  },
+  "enhanced_abstract": {
+    "tldr": "A multi-agent LLM system that annotates clusters, checks itself, scores its own confidence and explains its reasoning; across 970 cell types it beat existing methods by 12–41% in fully correct annotations, and it does notably well on cancer cells and fine T cell states.",
+    "sections": [
+      {"heading": "Problem", "body": "Single-prompt LLM annotation (e.g. GPTCelltype) can hallucinate, gives every answer with the same confidence, doesn't explain itself, and uses few markers, so it struggles with subpopulations."},
+      {"heading": "Architecture", "body": "Five core agents: an Annotator (zero-shot chain-of-thought, mimicking an expert's workflow), a Validator that checks marker–cell type consistency and sends failures back to the Annotator, a Formatter, a Quality Scorer (0–100), and a Reporter that writes a full reasoning report. Optional agents: Annotation Boost (re-examines low-scoring calls using the full FindAllMarkers table), Subclustering (annotates all subclusters of one population together), Consensus Similarity (agreement across repeated runs) and a RAG agent (CellMarker 2.0 markers plus Cell Ontology trees)."},
+      {"heading": "Inputs", "body": "Species, tissue, and per-cluster markers, typically from Seurat FindAllMarkers or Scanpy rank_genes_groups. The top 50 markers worked best; accuracy plateaus after that. Clustering is done beforehand by the user."},
+      {"heading": "Results", "body": "On GTEx, Tabula Sapiens, Human Cell Landscape, Mouse Cell Atlas and Azimuth it raised fully correct annotations by 12–41% and fully-or-partially correct by 9–20% over the next-best method. In cancer data it found 72.5% of cancer cells (vs. 20% for GPTCelltype), rising to 88–100% with one extra prompt line, and it recognized brain metastases from lung primaries. On PBMC68k and the ProjecTILs T cell reference it improved accuracy by 27% and was the only method that consistently separated naive, memory and exhausted T cells."},
+      {"heading": "Confidence and error-checking", "body": "Quality scores below 75 mostly flagged wrong or partial calls; scores above 90 were mostly correct. Annotation Boost fixed 24 of 27 low-scoring wrong calls without breaking correct ones. High-confidence disagreements also exposed likely errors in gold-standard labels (e.g. 'monocytes' that express Schwann cell markers)."}
+    ],
+    "key_findings": [
+      "Self-validation plus a confidence score lets users tell low-quality annotations from good ones",
+      "Works across underlying models: Claude 3.5 Sonnet 0.92, GPT-4o 0.88, LLaMA-3.2-90B 0.82 on a 100-cell-type benchmark",
+      "Detects mixed clusters (90% in 50:50 simulations) and cancer cells far better than single-prompt LLMs",
+      "About $0.02 per annotation with GPT-4o; ~2 minutes for 20 clusters on 8 cores"
+    ],
+    "limitations": [
+      "Depends on marker quality; weaker on continuous developmental data (0.53 average accuracy on a mouse organogenesis atlas)",
+      "Clustering must be done externally",
+      "Results vary with the underlying commercial LLM and its version"
+    ],
+    "why_it_matters": "Rule 3 (algorithm, preferred). The most complete published agent design for annotation, and directly relevant to the group's focus: it was tested on cancer cells and on fine T cell states from the ProjecTILs reference. Its validator, quality score and boost agents are patterns our agent can reuse."
+  },
+  "links": {
+    "code": [
+      {"label": "CASSIA (GitHub, MIT license)", "url": "https://github.com/ElliotXie/CASSIA"},
+      {"label": "Archived release (Zenodo)", "url": "https://doi.org/10.5281/zenodo.17261689"}
+    ],
+    "datasets": [
+      {"label": "Brain metastasis scRNA-seq GSE307976", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE307976"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "used", "summary": "Generated new scRNA-seq of brain metastases from non-small cell lung cancer patients (clinical trial NCT03398694); benchmarks otherwise reuse published data."},
+    "quantification": {"involvement": "none", "summary": "Not described in the main text."},
+    "preprocessing": {"involvement": "used", "summary": "Seurat v5 NormalizeData, then FindAllMarkers (min.pct 0.1, adjusted p < 0.05, log2FC > 0.25) to get per-cluster markers; the authors recommend QC, doublet detection and ambient RNA correction first.", "methods": ["Normalization", "Differential expression (FindAllMarkers)", "Top-50 marker selection"], "tools": ["Seurat v5", "Scanpy"]},
+    "dimensionality_reduction": {"involvement": "mentioned", "summary": "UMAP used only to display results."},
+    "batch_correction": {"involvement": "none", "summary": "Not addressed."},
+    "clustering": {"involvement": "mentioned", "summary": "Assumes clustering is done externally; an optional Subclustering agent annotates subclusters of one population together. Future versions may integrate clustering."},
+    "annotation": {"involvement": "core", "summary": "Multi-agent LLM annotation with validation loop, quality scoring, reasoning reports, optional boost, consensus and RAG agents; evaluated with Cell Ontology full/partial/incorrect scoring.", "methods": ["Zero-shot chain-of-thought annotation", "Iterative validator loop", "Quality score (0–100, 75 cutoff)", "Consensus Similarity across runs", "Hypothesis-driven Annotation Boost", "RAG over CellMarker 2.0 and Cell Ontology", "Mixed-population detection"], "tools": ["CASSIA", "GPT-4o", "Claude 3.5 Sonnet", "LLaMA-3.2-90B", "CellMarker 2.0", "Owlready (ontology)", "GPTCelltype", "ScType", "SingleR"]},
+    "trajectory": {"involvement": "mentioned", "summary": "Noted as a harder case (continuous trajectories weaken marker-based annotation) and a possible future agent task."},
+    "cell_communication": {"involvement": "none", "summary": "Not addressed."}
+  },
+  "algorithms": [
+    {"name": "CASSIA multi-agent framework", "role": "proposed", "description": "Annotator, Validator, Formatter, Scorer and Reporter agents with optional Boost, Subclustering, Consensus and RAG agents."},
+    {"name": "GPTCelltype", "role": "compared"},
+    {"name": "ScType", "role": "compared"},
+    {"name": "SingleR", "role": "compared"}
+  ],
+  "tools": [
+    {"name": "CASSIA", "role": "proposed", "language": "Python", "url": "https://github.com/ElliotXie/CASSIA"},
+    {"name": "Seurat v5", "role": "used", "language": "R"},
+    {"name": "CellMarker 2.0", "role": "used"},
+    {"name": "OpenRouter / OpenAI / Anthropic APIs", "role": "used"}
+  ],
+  "cell_types": []
+}

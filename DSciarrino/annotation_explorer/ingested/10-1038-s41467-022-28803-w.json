@@ -1,0 +1,78 @@
+{
+  "id": "10-1038-s41467-022-28803-w",
+  "doi": "10.1038/s41467-022-28803-w",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text (results, discussion, methods, data and code availability)", "url": "https://europepmc.org/article/PMC/PMC8913782"}
+    ],
+    "notes": "The marker database itself (sctype.app) was not downloaded; marker examples below are only those stated in the text."
+  },
+  "enhanced_abstract": {
+    "tldr": "ScType annotates clusters automatically from a large curated database of positive and negative markers, weighting each marker by how specific it is to one cell type; it labeled 72 of 73 cell types correctly across six datasets and runs far faster than comparable tools.",
+    "sections": [
+      {"heading": "Problem", "body": "Manual marker-based annotation is slow and error-prone because markers are shared across cell types (e.g. CD44 across many immune cells), negative markers are rarely used, and reference-based classifiers need a well-matched reference."},
+      {"heading": "The ScType database", "body": "Built by merging CellMarker and PanglaoDB after harmonizing gene symbols and removing weakly supported markers (one supporting reference in CellMarker, or seen in fewer than five clusters in PanglaoDB). It includes negative markers from the literature, and users can add their own."},
+      {"heading": "Algorithm", "body": "Within a tissue, each marker gets a specificity score: 1 for a marker listed for only one cell type, falling toward 0 as it's listed for more. Expression is z-scored per gene and multiplied by specificity; a cell type's score per cell is the sum over its positive markers minus the sum over its negative markers. Scores are summed per cluster and the top cell type wins. Clusters whose best score is negative or below a quarter of the cell count are labeled 'unknown'."},
+      {"heading": "Results", "body": "On six human and mouse datasets (liver, pancreas, PBMC, brain, mouse lung and retina) it labeled 72 of 73 cell types correctly, including 8 that the original authors had labeled wrongly or too broadly. It matched or beat scSorter, SCINA and scCATCH on accuracy in 5 of 6 datasets and was over 30× faster than scSorter. In simulations it stayed above 90% accuracy at 80% dropout and flagged held-out unknown types in 43 of 45 datasets."},
+      {"heading": "Cancer extension", "body": "An optional module calls SNVs in COSMIC cancer genes from scRNA-seq reads and runs CopyKAT for aneuploidy, then labels a cluster non-malignant if its SNV score is under 20 and most cells are diploid. Demonstrated on an AML patient sample."}
+    ],
+    "key_findings": [
+      "Negative markers fix close calls: adding CCR7 and SELL as negative markers for effector T cells let it separate naive from effector/memory T cells in PBMCs",
+      "Separated the two monocyte subpopulations in PBMC data where SCINA couldn't",
+      "Marker specificity weighting plus z-scores is cheap and accurate; removing the z-score step sharply reduced accuracy"
+    ],
+    "limitations": [
+      "Only as good as the database's coverage (e.g. no fetal brain markers, so fetal cells were missed)",
+      "Few negative markers are available so far",
+      "Z-score combination of markers may be suboptimal for sparse single-cell data"
+    ],
+    "why_it_matters": "Rule 3 (algorithm, preferred), with its own marker database. Its positive/negative marker scoring is close to the 'rules' our project wants, and the specificity score is a simple, explainable way for an agent to weigh evidence."
+  },
+  "links": {
+    "code": [
+      {"label": "ScType R code (GitHub)", "url": "https://github.com/IanevskiAleksandr/sc-type/"},
+      {"label": "ScType web tool", "url": "http://sctype.app"}
+    ],
+    "datasets": [
+      {"label": "ScType marker database", "url": "https://sctype.app/database.php"},
+      {"label": "10x PBMC 3k", "url": "https://s3-us-west-2.amazonaws.com/10x.files/samples/cell/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz"},
+      {"label": "Human liver GSE124395", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE124395"},
+      {"label": "Human pancreas GSE85241", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE85241"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "mentioned", "summary": "Shown to work across platforms (e.g. Drop-seq, Smart-seq); no new sequencing."},
+    "quantification": {"involvement": "mentioned", "summary": "Takes raw count data; SNV calling works from BAM files (samtools, Strelka2, vartrix)."},
+    "preprocessing": {"involvement": "used", "summary": "Seurat v4 normalization; each gene's expression is z-scored across cells before scoring.", "methods": ["Normalization", "Per-gene z-score"], "tools": ["Seurat v4"]},
+    "dimensionality_reduction": {"involvement": "used", "summary": "20 principal components feed clustering; PCA, t-SNE, UMAP, Isomap, diffusion maps or largeVis for display.", "methods": ["PCA", "t-SNE", "UMAP", "Isomap", "Diffusion map"]},
+    "batch_correction": {"involvement": "used", "summary": "For multiple datasets, uses Seurat anchor integration (FindIntegrationAnchors / IntegrateData).", "methods": ["Seurat anchor integration"], "tools": ["Seurat v4"]},
+    "clustering": {"involvement": "used", "summary": "Default Louvain clustering on a shared nearest-neighbor graph (resolution 0.8); SC3, DBSCAN, GiniClust and k-means also offered.", "methods": ["Louvain (SNN graph)", "SC3", "DBSCAN", "GiniClust", "k-means"], "tools": ["Seurat v4"]},
+    "annotation": {"involvement": "core", "summary": "Fully automated marker scoring: specificity-weighted z-scores of positive minus negative markers, summed per cluster; low scores become 'unknown'. Optional SNV/CNV module separates malignant from non-malignant clusters.", "methods": ["Marker specificity score", "Positive/negative marker enrichment score", "Unknown-type threshold", "SNV score in COSMIC genes", "CopyKAT aneuploidy"], "tools": ["ScType", "ScType database", "CopyKAT", "Strelka2", "scSorter", "SCINA", "scCATCH"]},
+    "trajectory": {"involvement": "none", "summary": "Not addressed."},
+    "cell_communication": {"involvement": "none", "summary": "Not addressed."}
+  },
+  "algorithms": [
+    {"name": "ScType scoring", "role": "proposed", "description": "Specificity-weighted z-score sum of positive minus negative markers per cell, summed per cluster."},
+    {"name": "Louvain clustering", "role": "used"},
+    {"name": "CopyKAT", "role": "used", "description": "Bayesian segmentation to call aneuploid vs. diploid cells."},
+    {"name": "scSorter", "role": "compared"},
+    {"name": "SCINA", "role": "compared"},
+    {"name": "scCATCH", "role": "compared"},
+    {"name": "Splatter", "role": "used", "description": "Simulated datasets with 50–80% dropout."}
+  ],
+  "tools": [
+    {"name": "ScType", "role": "proposed", "language": "R", "url": "https://github.com/IanevskiAleksandr/sc-type/"},
+    {"name": "Seurat v4", "role": "used", "language": "R"},
+    {"name": "CellMarker", "role": "used"},
+    {"name": "PanglaoDB", "role": "used", "url": "https://panglaodb.se"},
+    {"name": "CopyKAT", "role": "used", "language": "R"}
+  ],
+  "cell_types": [
+    {"name": "Plasma B cell", "positive_markers": ["SDC1 (CD138)"], "negative_markers": ["CD19", "MS4A1 (CD20)"], "context": "Separated plasma from immature B cells in human liver data"},
+    {"name": "Effector T cell", "positive_markers": [], "negative_markers": ["CCR7", "SELL"], "context": "CCR7 and SELL are expressed by naive and memory T cells but not effector T cells (human PBMC)"},
+    {"name": "Rod bipolar cell", "positive_markers": ["PRKCA", "CAR8"], "context": "Mouse retina"},
+    {"name": "Cone bipolar cell", "positive_markers": ["SCGN"], "context": "Mouse retina"}
+  ]
+}

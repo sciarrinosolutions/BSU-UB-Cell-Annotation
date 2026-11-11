@@ -1,0 +1,72 @@
+{
+  "id": "10-1038-s41592-024-02235-4",
+  "doi": "10.1038/s41592-024-02235-4",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text (main text, Methods, data availability)", "url": "https://europepmc.org/article/PMC/PMC11310073"}
+    ],
+    "notes": "Figures and supplementary tables were not available in the text; results are described from the main text."
+  },
+  "enhanced_abstract": {
+    "tldr": "GPT-4, given a cluster's top marker or differential genes, names the cell type in close agreement with expert labels, and beats SingleR, ScType and CellMarker 2.0 on ten datasets.",
+    "sections": [
+      {"heading": "Question", "body": "Can a general-purpose large language model replace the manual step of matching each cluster's highly expressed genes to known marker genes?"},
+      {"heading": "Approach", "body": "The authors built GPTCelltype, an R package that turns per-cluster gene lists into a prompt ('Identify cell types of <tissue> cells using the following markers…') and sends it to GPT-4 or GPT-3.5 through the OpenAI API. They tested basic, chain-of-thought and repeated (majority-of-five) prompts, and top 10/20/30 genes from Wilcoxon or t-tests."},
+      {"heading": "Evaluation", "body": "Ten datasets across five species and hundreds of tissue and cell types, including normal tissue (HuBMAP Azimuth, GTEx, Human and Mouse Cell Atlas, Tabula Sapiens) and cancer (B-cell lymphoma, lung and colon cancer). Each prediction was mapped to Cell Ontology terms and scored 1 (full match), 0.5 (partial, same broad type) or 0 (mismatch) against the original authors' manual labels. Simulations tested mixed cell types, unknown cell types, missing genes and noisy gene lists."},
+      {"heading": "Results", "body": "GPT-4 fully or partially matched manual labels for over 75% of cell types in most studies and tissues, and did best with literature-derived markers and with the top ten Wilcoxon genes; prompt strategy made little difference. It was strongest on immune cells and weaker on subtypes, very small clusters (≤10 cells) and B-lymphoma malignant cells. It separated pure from mixed types with 93% accuracy and known from unknown with 99%, and gave the same answer 85% of the time on repeated queries. API cost stayed under $0.10 for all queries in the study."}
+    ],
+    "key_findings": [
+      "Top 10 differential genes from a two-sided Wilcoxon test is the best input",
+      "Outperformed SingleR, ScType and CellMarker 2.0 on average agreement score",
+      "Some 'mismatches' were GPT-4 being more specific than the manual label (e.g. fibroblast vs. stromal cell)",
+      "Major types are matched more often than fine subtypes such as CD4 memory T cells"
+    ],
+    "limitations": [
+      "Training data are undisclosed, so the basis for an annotation can't be checked; the authors recommend expert validation",
+      "Risk of hallucination; noisy or unreliable differential genes degrade results",
+      "Datasets published before GPT-4's September 2021 training cutoff may have been seen in training"
+    ],
+    "why_it_matters": "Rule 3 (algorithm, preferred). This is the baseline the project's agent has to beat: an LLM annotating clusters from marker lists, with a reusable scoring scheme (Cell Ontology full/partial/mismatch) we can adopt for our own benchmarks."
+  },
+  "links": {
+    "code": [
+      {"label": "GPTCelltype (R package)", "url": "https://github.com/Winnie09/GPTCelltype"}
+    ],
+    "datasets": [
+      {"label": "HuBMAP Azimuth references", "url": "https://azimuth.hubmapconsortium.org/"},
+      {"label": "Tabula Sapiens (UCSC Cell Browser)", "url": "https://cells.ucsc.edu/?ds=tabula-sapiens"},
+      {"label": "B-cell lymphoma data (Zenodo)", "url": "https://zenodo.org/record/7813151"},
+      {"label": "Colon cancer GSE132465", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE132465"},
+      {"label": "Lung cancer GSE131907", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE131907"},
+      {"label": "Human Cell Atlas DGE (figshare)", "url": "https://figshare.com/articles/dataset/HCL_DGE_Data/7235471"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "none", "summary": "Reuses published datasets; no new sequencing."},
+    "quantification": {"involvement": "none", "summary": "Count matrices taken from the original studies."},
+    "preprocessing": {"involvement": "used", "summary": "Library-size normalization and log1p transform of raw counts; differential genes per cell type with Seurat FindAllMarkers (Wilcoxon or t-test, logFC ≥ 0.25, detected in ≥10% of cells).", "methods": ["Library-size normalization + log transform", "Wilcoxon rank-sum test", "Two-sample t-test"], "tools": ["Seurat", "SCANPY"]},
+    "dimensionality_reduction": {"involvement": "none", "summary": "Not part of the method; it starts from cluster-level gene lists."},
+    "batch_correction": {"involvement": "mentioned", "summary": "Some source datasets were batch-corrected by their original authors (e.g. ComBat for GTEx); not performed here.", "methods": ["ComBat"]},
+    "clustering": {"involvement": "mentioned", "summary": "Uses the original authors' clusters / manual cell type groups as given."},
+    "annotation": {"involvement": "core", "summary": "GPT-4 is prompted with each cluster's top differential or marker genes and the tissue name, and returns one cell type per cluster; results are scored against manual labels via Cell Ontology terms.", "methods": ["LLM prompting with marker gene lists", "Chain-of-thought prompt", "Repeated prompting (majority vote of 5)", "Cell Ontology agreement scoring (1 / 0.5 / 0)"], "tools": ["GPTCelltype", "GPT-4", "GPT-3.5", "SingleR", "ScType", "CellMarker 2.0"]},
+    "trajectory": {"involvement": "none", "summary": "Not addressed."},
+    "cell_communication": {"involvement": "none", "summary": "Not addressed."}
+  },
+  "algorithms": [
+    {"name": "GPT-4", "role": "used", "description": "Large language model queried through the OpenAI API."},
+    {"name": "GPT-3.5", "role": "compared"},
+    {"name": "SingleR", "role": "compared", "description": "Reference correlation with the Human Primary Cell Atlas reference."},
+    {"name": "ScType", "role": "compared", "description": "Marker-database scoring (vectorized in-house version)."},
+    {"name": "Wilcoxon rank-sum test", "role": "used", "description": "Selects the top differential genes used as prompt input."}
+  ],
+  "tools": [
+    {"name": "GPTCelltype", "role": "proposed", "language": "R", "url": "https://github.com/Winnie09/GPTCelltype"},
+    {"name": "Seurat", "role": "used", "language": "R"},
+    {"name": "SingleR", "role": "compared", "language": "R"},
+    {"name": "ScType", "role": "compared", "language": "R"},
+    {"name": "CellMarker 2.0", "role": "compared"}
+  ],
+  "cell_types": []
+}

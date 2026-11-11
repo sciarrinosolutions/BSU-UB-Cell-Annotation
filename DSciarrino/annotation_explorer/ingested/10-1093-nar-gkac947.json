@@ -1,0 +1,57 @@
+{
+  "id": "10-1093-nar-gkac947",
+  "doi": "10.1093/nar/gkac947",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text", "url": "https://europepmc.org/article/PMC/PMC9825416"}
+    ],
+    "notes": "Database paper; no benchmark. The database URL is taken from the paper; on 2026-11-10 it returned HTTP 403 to an automated check (may block scripts) and the IP mirror didn't respond."
+  },
+  "enhanced_abstract": {
+    "tldr": "CellMarker 2.0 is a manually curated database of experimentally supported cell-type markers for human and mouse (26,915 markers, 2,578 cell types, 656 tissues, 83,361 tissue–cell type–marker entries), with web tools for annotating, clustering and analyzing scRNA-seq data.",
+    "sections": [
+      {"heading": "What's in it", "body": "Curated from 24,591 papers (mostly 2019–2022, journals with impact factor >7), adding 36,300 entries to version 1.0. Each entry records species, tissue (Uberon ID), cell type (Cell Ontology ID), marker gene identifiers, marker type (26 gene types including protein-coding genes and lncRNAs), sequencing technology (48, e.g. 10x Chromium, Smart-seq2, Drop-seq) and the source publication. It covers 355 cancer types' cell markers."},
+      {"heading": "Web tools", "body": "Six modules run on 108 bundled human disease datasets (38 diseases, 1.47 million cells): cell annotation from a list of differentially expressed genes, clustering with UMAP/t-SNE (Seurat), malignancy via copy number (InferCNV), differentiation trajectories (Monocle 3), feature gene expression, and cell–cell communication (CellPhoneDB)."},
+      {"heading": "Access", "body": "Searchable by tissue, cell type or marker, browsable by category, and fully downloadable."}
+    ],
+    "key_findings": [
+      "Largest manually curated human/mouse marker resource, with ontology IDs for tissues and cell types",
+      "Markers are tagged by sequencing technology and gene type, which can help filter for scRNA-seq-relevant markers",
+      "Includes tumor-cell markers across hundreds of cancer types"
+    ],
+    "limitations": [
+      "Curation was limited to journals with impact factor above 7",
+      "No benchmark of the annotation tool's accuracy in this paper",
+      "Human and mouse only"
+    ],
+    "why_it_matters": "Rule 4 (curated marker source, preferred). The most direct source of raw marker rules for the project, with ontology IDs that let our agent standardize labels. Several ingested methods (ScType, CASSIA's RAG agent, GPTCelltype's benchmark) already build on it."
+  },
+  "links": {
+    "datasets": [
+      {"label": "CellMarker 2.0 database", "url": "http://bio-bigdata.hrbmu.edu.cn/CellMarker/"},
+      {"label": "CellMarker 1.0 (previous version)", "url": "http://bio-bigdata.hrbmu.edu.cn/CellMarker1.0"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "mentioned", "summary": "Markers are annotated with the sequencing technology they came from (48 technologies).", "methods": ["10x Chromium", "Smart-seq2", "Drop-seq"]},
+    "quantification": {"involvement": "none", "summary": "Not addressed."},
+    "preprocessing": {"involvement": "used", "summary": "Web tool computes differentially expressed genes between clusters.", "methods": ["Differential expression"], "tools": ["Seurat v4"]},
+    "dimensionality_reduction": {"involvement": "used", "summary": "Web tool offers UMAP and t-SNE.", "methods": ["UMAP", "t-SNE"], "tools": ["Seurat v4"]},
+    "batch_correction": {"involvement": "none", "summary": "Not addressed."},
+    "clustering": {"involvement": "used", "summary": "Web tool clusters bundled datasets at user-chosen resolution.", "methods": ["Graph-based clustering"], "tools": ["Seurat v4"]},
+    "annotation": {"involvement": "core", "summary": "Curated tissue–cell type–marker database with ontology IDs; a web tool scores cell types from a user's differentially expressed genes, and all modules label cells from the database.", "methods": ["Manual literature curation", "Marker matching score", "Copy-number malignancy calling"], "tools": ["CellMarker", "InferCNV"]},
+    "trajectory": {"involvement": "used", "summary": "Web tool runs differentiation and gene trajectories.", "methods": ["Trajectory inference"], "tools": ["Monocle 3"]},
+    "cell_communication": {"involvement": "used", "summary": "Web tool runs ligand–receptor interaction analysis.", "methods": ["Ligand–receptor analysis"], "tools": ["CellPhoneDB v3"]}
+  },
+  "algorithms": [],
+  "tools": [
+    {"name": "CellMarker", "role": "proposed", "url": "http://bio-bigdata.hrbmu.edu.cn/CellMarker/"},
+    {"name": "Seurat v4", "role": "used", "language": "R"},
+    {"name": "InferCNV", "role": "used", "language": "R"},
+    {"name": "Monocle 3", "role": "used", "language": "R"},
+    {"name": "CellPhoneDB v3", "role": "used"}
+  ],
+  "cell_types": []
+}

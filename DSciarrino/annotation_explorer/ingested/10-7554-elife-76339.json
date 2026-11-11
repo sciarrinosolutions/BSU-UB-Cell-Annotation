@@ -1,0 +1,78 @@
+{
+  "id": "10-7554-elife-76339",
+  "doi": "10.7554/eLife.76339",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text (results, methods, data availability)", "url": "https://europepmc.org/article/PMC/PMC9323004"}
+    ],
+    "notes": "Kinetics and clonotype sections were skimmed. All markers are mouse genes."
+  },
+  "enhanced_abstract": {
+    "tldr": "A reference map of ~35,000 virus-specific mouse CD4 T cells from acute and chronic LCMV infection, defining six major states (Th1 and Tfh effector and memory, central memory and its precursor) that can be used with ProjecTILs to label CD4 T cells in other datasets.",
+    "sections": [
+      {"heading": "Goal", "body": "Give CD4 T cell states a consistent definition and track how they change over the course of acute versus chronic viral infection."},
+      {"heading": "Data and map", "body": "Virus-specific (GP66:I-Ab+) CD4 T cells sorted at several timepoints after acute (Armstrong) or chronic (Clone 13) LCMV infection: 11 samples, 35,488 cells after QC, some with paired TCR sequencing. Integrated with STACAS, clustered with Seurat and annotated by canonical markers into six major states plus three minor ones (including Tregs)."},
+      {"heading": "Biology", "body": "In acute infection cells shift from effector to memory states, with subtype-specific gene modules and timing; in chronic infection they take on distinct chronicity programs. Clonal responses were private to each mouse, and most clones produced both Tfh and Th1 cells regardless of TCR."},
+      {"heading": "Use as a reference", "body": "Datasets from other studies, tissues and perturbations were projected onto the map with ProjecTILs after purifying CD4 T cells with scGate. Tumor-specific CD4 T cells from a colon carcinoma model mostly matched Tfh (in lymph nodes) and Th1 effector or Treg states (in tumors), but the tumor 'Th1' cells formed a separate cluster with Th2-like genes (Ccl1, Ccr8, Il13), showing how the tools flag states the reference doesn't contain."}
+    ],
+    "key_findings": [
+      "Six major CD4 states defined by explicit marker combinations",
+      "Tcm and Tcm-precursor cells are defined mainly by lacking Th1/Tfh programs and sharing Ccr7, Klf2, S1pr1",
+      "Practical toolkit for detecting novel states after projection (radar plots, re-embedding, discriminant genes, silhouette scores)"
+    ],
+    "limitations": [
+      "Mouse viral infection, not human cancer",
+      "Focused on one lineage (virus-specific CD4 T cells)",
+      "Tumor CD4 T cells only partly match the viral reference"
+    ],
+    "why_it_matters": "Rated 'later' (rule 1 exception: a reusable reference map, but set in viral infection) and Dr. Talkington's example of a less useful paper. It defines CD4 T cell states with clear markers, which could help refine T cell annotation later; it isn't needed for the initial build."
+  },
+  "links": {
+    "code": [
+      {"label": "ProjecTILs (GitHub)", "url": "https://github.com/carmonalab/ProjecTILs"},
+      {"label": "Novel-state detection case study", "url": "https://carmonalab.github.io/ProjecTILs_CaseStudies/novelstate.html"}
+    ],
+    "datasets": [
+      {"label": "CD4 reference map (figshare)", "url": "https://doi.org/10.6084/m9.figshare.16592693"},
+      {"label": "Reference map web portal (SPICA)", "url": "https://spica.unil.ch/refs/viral-CD4-T"},
+      {"label": "Virus-specific CD4 T cells GSE182320", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE182320"},
+      {"label": "Tumor-specific CD4 T cells GSE200635", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE200635"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "used", "summary": "Sorted antigen-specific CD4 T cells on 10x Chromium (5′ or 3′), some samples hashtagged with TotalSeq antibodies, with paired TCR sequencing; Illumina NextSeq/NovaSeq.", "tools": ["10x Genomics Chromium"]},
+    "quantification": {"involvement": "used", "summary": "Count matrices from Cell Ranger; TCRs merged with scRepertoire.", "tools": ["Cell Ranger", "scRepertoire"]},
+    "preprocessing": {"involvement": "used", "summary": "QC: >700 genes, 1,500–15,000 UMIs, <50% ribosomal, <10% mitochondrial, plus per-sample outlier removal; UCell signatures to remove contaminating cell types; scGate to purify CD4 T cells in external data.", "methods": ["QC thresholds", "Signature-based contaminant removal", "Marker gating"], "tools": ["UCell", "scGate"]},
+    "dimensionality_reduction": {"involvement": "used", "summary": "20 dimensions for integration; UMAP of the reference space; query projection reuses reference embeddings.", "methods": ["PCA", "UMAP"]},
+    "batch_correction": {"involvement": "used", "summary": "STACAS integration of 11 samples (800 variable genes excluding mitochondrial, ribosomal, heat-shock, interferon, cell-cycle and TCR genes).", "methods": ["STACAS anchor integration"], "tools": ["STACAS"]},
+    "clustering": {"involvement": "used", "summary": "Seurat FindNeighbors/FindClusters (k = 10, resolution 0.4), then clusters merged and annotated into nine functional clusters.", "methods": ["SNN graph clustering"], "tools": ["Seurat"]},
+    "annotation": {"involvement": "core", "summary": "Clusters annotated by canonical markers and differential expression; the resulting map is a reference for ProjecTILs label transfer, with tools to detect states not in the reference.", "methods": ["Marker-based cluster annotation", "Reference projection", "Novel-state detection (silhouette, discriminant genes)"], "tools": ["ProjecTILs", "scGate"]},
+    "trajectory": {"involvement": "mentioned", "summary": "Effector-to-memory transitions are inferred from timepoints and TCR clonal sharing, not from a trajectory algorithm."},
+    "cell_communication": {"involvement": "none", "summary": "Not addressed."}
+  },
+  "algorithms": [
+    {"name": "STACAS", "role": "used"},
+    {"name": "ProjecTILs", "role": "used"},
+    {"name": "UCell signature scoring", "role": "used"},
+    {"name": "scGate", "role": "used"}
+  ],
+  "tools": [
+    {"name": "ProjecTILs", "role": "used", "language": "R", "url": "https://github.com/carmonalab/ProjecTILs"},
+    {"name": "STACAS", "role": "used", "language": "R"},
+    {"name": "scGate", "role": "used", "language": "R", "url": "https://github.com/carmonalab/scGate"},
+    {"name": "UCell", "role": "used", "language": "R"},
+    {"name": "Seurat", "role": "used", "language": "R"},
+    {"name": "scRepertoire", "role": "used", "language": "R"}
+  ],
+  "cell_types": [
+    {"name": "CD4 Th1 effector", "positive_markers": ["Cxcr6", "Ly6c2", "Prdm1", "Gzmb"], "context": "Mouse, LCMV; Th1 module also includes Id2, Runx3"},
+    {"name": "CD4 Tfh effector", "positive_markers": ["Cxcr5", "Izumo1r", "Bcl6", "Il21"], "context": "Mouse, LCMV; Tfh module also includes Tox, Maf"},
+    {"name": "CD4 central memory precursor (Tcmp)", "positive_markers": ["Ccr7"], "context": "Highest Ccr7"},
+    {"name": "CD4 Th1 memory", "positive_markers": ["Tcf7", "Il7r", "Cxcr6", "Ly6c2"]},
+    {"name": "CD4 Tfh memory", "positive_markers": ["Tcf7", "Il7r", "Izumo1r"]},
+    {"name": "CD4 central memory (Tcm)", "positive_markers": ["Tcf7", "Il7r", "Ccr7", "Klf2", "S1pr1"], "context": "Low Th1/Tfh marker genes"},
+    {"name": "Regulatory T cell", "positive_markers": ["Foxp3"], "context": "Minor cluster"}
+  ]
+}

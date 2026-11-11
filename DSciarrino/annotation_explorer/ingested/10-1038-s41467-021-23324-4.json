@@ -1,0 +1,83 @@
+{
+  "id": "10-1038-s41467-021-23324-4",
+  "doi": "10.1038/s41467-021-23324-4",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text (results, methods, data and code availability)", "url": "https://europepmc.org/article/PMC/PMC8137700"}
+    ],
+    "notes": "The perturbation and infection results sections were skimmed. Markers are listed as given in the paper; the reference is murine (mouse gene case), and human data are projected via orthologs."
+  },
+  "enhanced_abstract": {
+    "tldr": "ProjecTILs projects new T cell scRNA-seq data onto a fixed, annotated reference atlas of tumor-infiltrating T cell states without distorting it, labels each cell by nearest neighbors (91.6% correct in cross-validation), and flags query cells that deviate from known states.",
+    "sections": [
+      {"heading": "Problem", "body": "T cell subtypes and states are defined inconsistently across studies, so results from different datasets, diseases and species are hard to compare."},
+      {"heading": "Reference atlases", "body": "A murine TIL atlas of 16,803 T cells from 25 samples across six studies (melanoma and colon adenocarcinoma tumors plus tumor-draining lymph nodes), integrated with STACAS. It has nine states: CD8 naive-like, early-activation, effector-memory, precursor-exhausted (Tpex) and terminally exhausted (Tex); CD4 naive-like, Th1-like, Tfh and Treg. A second atlas covers virus-specific CD8 T cells in acute and chronic LCMV infection."},
+      {"heading": "Projection algorithm", "body": "The query is log-normalized, non-T cells are removed with TILPRED, and the query is batch-aligned to the reference with STACAS/Seurat anchors. The reference's own PCA rotation and UMAP model are then applied to the query, so the reference map never changes. A nearest-neighbor majority vote in PCA or UMAP space assigns each query cell a state. ICA components and discriminant genes reveal programs where the query deviates from the reference."},
+      {"heading": "Validation", "body": "In leave-samples-out cross-validation, 90% of projected cells landed within one UMAP unit of their true position and 91.6% got the right state. Tumor-specific OVA-tetramer+ CD8 T cells projected mostly to Tex (90.2%), as expected."},
+      {"heading": "Human tumors", "body": "Human TILs from melanoma, basal cell carcinoma, breast, liver, lung and colorectal cohorts, projected through mouse orthologs, showed the same subtypes in both species. Expanded, tumor-specific clones sat in Tex, Tpex and part of the effector-memory compartment, supporting a model in which EM cells give rise to Tpex and then Tex."}
+    ],
+    "key_findings": [
+      "Reference projection keeps the annotated map stable, so different studies can be compared on the same coordinates",
+      "T cell subtypes in tumors are conserved across cohorts, cancer types and between human and mouse",
+      "Tpex vs. Tex is defined by TCF7/IL7R/XCL1-high, low-cytotoxicity Tpex versus GZMB/PRF1-high, HAVCR2-high proliferating Tex"
+    ],
+    "limitations": [
+      "Reference atlases are murine; human data go through ortholog mapping",
+      "Covers T cells only; other cell types must be filtered out first",
+      "Cells in states absent from the reference can only be flagged as deviating, not named"
+    ],
+    "why_it_matters": "Rule 3 (algorithm, preferred). A reference-projection method built specifically for T cells in tumors, one of the group's two focus lineages, with explicit marker definitions for each T cell state. CASSIA also uses its T cell reference as a hard benchmark for fine T cell states."
+  },
+  "links": {
+    "code": [
+      {"label": "ProjecTILs R package (GitHub)", "url": "https://github.com/carmonalab/ProjecTILs"},
+      {"label": "ProjecTILs case studies", "url": "https://github.com/carmonalab/ProjecTILs_CaseStudies"},
+      {"label": "STACAS integration (GitHub)", "url": "https://github.com/carmonalab/STACAS"}
+    ],
+    "datasets": [
+      {"label": "Interactive TIL atlas", "url": "http://TILatlas.unil.ch"},
+      {"label": "TIL reference atlas source data (figshare)", "url": "https://doi.org/10.6084/m9.figshare.12478571"},
+      {"label": "Tumor-draining lymph node data E-MTAB-9274", "url": "https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-9274"},
+      {"label": "Melanoma (Li) GSE123139", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123139"},
+      {"label": "Basal cell carcinoma (Yost) GSE123813", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123813"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "used", "summary": "New scRNA-seq of T cells from MC38 tumor-draining lymph nodes; otherwise public mouse and human datasets."},
+    "quantification": {"involvement": "none", "summary": "Uses published count matrices; accepts UMI counts or TPM."},
+    "preprocessing": {"involvement": "used", "summary": "Log-normalization log(1 + 10,000·x/S); TILPRED removes non-T cells; variable genes exclude cell-cycle, mitochondrial, ribosomal and non-coding genes.", "methods": ["Log normalization", "T cell purity filtering", "Variable gene selection"], "tools": ["TILPRED", "Seurat"]},
+    "dimensionality_reduction": {"involvement": "core", "summary": "The reference's PCA rotation and UMAP model are applied to the query so it lands in the unchanged reference space; ICA (50 components) is used to find gene programs where the query deviates.", "methods": ["PCA projection with reference rotation", "UMAP predict", "Independent component analysis (fastICA)"], "tools": ["umap (R)", "fastICA"]},
+    "batch_correction": {"involvement": "core", "summary": "STACAS (anchor-based, built on Seurat) integrates studies to build the atlases and aligns each query to the reference before projection.", "methods": ["STACAS anchor integration"], "tools": ["STACAS", "Seurat"]},
+    "clustering": {"involvement": "used", "summary": "SNN clustering of the integrated reference, then manual annotation of clusters into functional states.", "methods": ["Shared nearest neighbor clustering"], "tools": ["Seurat"]},
+    "annotation": {"involvement": "core", "summary": "Nearest-neighbor majority vote against the annotated reference assigns each query cell one of nine T cell states; reference states were defined by marker expression, expression gradients and MAST enrichment. Compared with Azimuth, scmap and SingleR.", "methods": ["Reference projection", "k-nearest-neighbor classification", "Marker-based reference annotation", "Human-to-mouse ortholog mapping"], "tools": ["ProjecTILs", "TILPRED", "MAST", "Azimuth", "scmap", "SingleR"]},
+    "trajectory": {"involvement": "mentioned", "summary": "TCR clonal sharing is used to infer a differentiation path (effector-memory → Tpex → Tex), but no trajectory algorithm is run."},
+    "cell_communication": {"involvement": "none", "summary": "Not addressed."}
+  },
+  "algorithms": [
+    {"name": "ProjecTILs projection", "role": "proposed", "description": "Batch-align query to reference, apply reference PCA/UMAP transforms, classify by nearest neighbors."},
+    {"name": "STACAS", "role": "used", "description": "Anchor-based batch correction."},
+    {"name": "fastICA", "role": "used"},
+    {"name": "Azimuth", "role": "compared"},
+    {"name": "scmap", "role": "compared"},
+    {"name": "SingleR", "role": "compared"}
+  ],
+  "tools": [
+    {"name": "ProjecTILs", "role": "proposed", "language": "R", "url": "https://github.com/carmonalab/ProjecTILs"},
+    {"name": "STACAS", "role": "used", "language": "R", "url": "https://github.com/carmonalab/STACAS"},
+    {"name": "TILPRED", "role": "used", "language": "R"},
+    {"name": "Seurat", "role": "used", "language": "R"},
+    {"name": "MAST", "role": "used", "language": "R"}
+  ],
+  "cell_types": [
+    {"name": "CD8 naive-like T cell", "positive_markers": ["Tcf7", "Ccr7"], "negative_markers": ["Pdcd1", "Tnfrsf9"], "context": "Mouse TILs; also lacks cytotoxic molecules"},
+    {"name": "CD8 effector-memory T cell", "positive_markers": ["Tcf7", "Gzmk"], "context": "Low to intermediate Pdcd1; in human TILs CXCR3, GZMK and GZMA are highest here"},
+    {"name": "CD8 precursor-exhausted (Tpex)", "positive_markers": ["Tcf7", "Pdcd1", "Ctla4", "Tox"], "negative_markers": ["Havcr2"], "context": "Low granzymes; human Tpex also high in IL7R and XCL1, low MKI67"},
+    {"name": "CD8 terminally exhausted (Tex)", "positive_markers": ["Pdcd1", "Ctla4", "Lag3", "Tigit", "Havcr2", "Tox", "Gzmb"], "context": "High granzymes and inhibitory receptors; human Tex also ENTPD1 (CD39)-high"},
+    {"name": "CD4 Th1-like", "positive_markers": ["Ifngr1", "Fasl"], "context": "Mouse TILs"},
+    {"name": "CD4 follicular helper (Tfh)", "positive_markers": ["Cxcr5", "Tox", "Slamf6"], "context": "Mouse TILs"},
+    {"name": "Regulatory T cell (Treg)", "positive_markers": ["Foxp3"], "context": "Mouse TILs"},
+    {"name": "T cell (purity filter)", "positive_markers": ["Cd2", "Cd3d", "Cd3e", "Cd3g", "Cd4", "Cd8a", "Cd8b1"], "negative_markers": ["Spi1", "Fcer1g", "Csf1r", "Cd19"], "context": "TILPRED rule used to keep only T cells before integration"}
+  ]
+}

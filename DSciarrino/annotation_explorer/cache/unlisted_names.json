@@ -1,0 +1,15 @@
+{
+ "tools": [],
+ "methods": [
+  "Computed marker genes",
+  "Expression binning",
+  "Gene rank encoding",
+  "Human-to-mouse ortholog mapping",
+  "Hypothesis-driven Annotation Boost",
+  "Iterative validator loop",
+  "Mini-cluster averaging",
+  "Model updating with new labels",
+  "Transcription factor enrichment",
+  "Two-level label hierarchy"
+ ]
+}

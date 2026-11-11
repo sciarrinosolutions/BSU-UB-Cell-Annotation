@@ -1,0 +1,70 @@
+{
+  "id": "10-1186-s13059-025-03574-x",
+  "doi": "10.1186/s13059-025-03574-x",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text (results, conclusions, methods, data and code availability)", "url": "https://europepmc.org/article/PMC/PMC12007350"}
+    ],
+    "notes": "Numeric scores are in supplementary tables, which weren't read; results are described as the text states them."
+  },
+  "enhanced_abstract": {
+    "tldr": "Used without fine-tuning, the single-cell foundation models scGPT and Geneformer separate cell types and remove batch effects worse than simple baselines: selecting highly variable genes, scVI or Harmony.",
+    "sections": [
+      {"heading": "Question", "body": "Foundation models are usually judged after fine-tuning on labeled data. In discovery settings there are no labels, so their embeddings must work zero-shot. Do they?"},
+      {"heading": "Setup", "body": "Cell embeddings from Geneformer and three scGPT variants (pretrained on kidney, blood or 33M human cells) versus baselines: 2,000 highly variable genes (HVG), scVI and Harmony, the last two trained on each dataset. Five human datasets: pancreas (five sources), PBMC 12k, PBMC 95k, a cross-tissue immune atlas and Tabula Sapiens. Metrics from the scIB benchmark: AvgBIO (mean of silhouette, NMI and ARI on Louvain clusters) for cell type separation; batch silhouette and principal component regression for batch mixing."},
+      {"heading": "Cell type separation", "body": "Both foundation models scored below HVG, scVI and Harmony on AvgBIO in general; scGPT beat the baselines only on PBMC 12k. Pretraining helped scGPT over a random-weight model, but the 33M-cell model didn't beat the blood-only model. Doing well didn't track whether a dataset had been seen in pretraining."},
+      {"heading": "Batch integration", "body": "Geneformer ranked last on nearly every batch metric, with embeddings dominated by batch. scGPT corrected batches within a technology but not across technologies. scVI and Harmony handled technical batches better; scGPT did better only on Tabula Sapiens and the immune atlas, both in its pretraining data. Raw HVG gave the best full-dimension batch scores."},
+      {"heading": "Why", "body": "Both models struggle with their own pretraining task: scGPT's expression predictions barely beat predicting the mean, and Geneformer's gene rankings correlate only moderately with the truth (median r = 0.56). The authors question whether masked-language-model pretraining yields useful cell embeddings."}
+    ],
+    "key_findings": [
+      "Zero-shot scGPT and Geneformer don't consistently beat HVG, scVI or Harmony",
+      "More pretraining data didn't always help",
+      "Evaluation is confounded when benchmark datasets were part of pretraining; the authors call for held-out benchmark datasets"
+    ],
+    "limitations": [
+      "Only two foundation models and five datasets; transcriptomic data only",
+      "Some evaluation datasets overlap with pretraining data",
+      "Doesn't test fine-tuned performance"
+    ],
+    "why_it_matters": "Rule 3 (benchmark, preferred). A warning for our agent design: foundation-model embeddings can't be assumed to help annotation without fine-tuning, and simple baselines (HVG, scVI, Harmony) should always be in our benchmarks. It also models the benchmark hygiene we need: keep evaluation data out of anything a model has seen."
+  },
+  "links": {
+    "code": [
+      {"label": "Evaluation code (GitHub, MIT)", "url": "https://github.com/microsoft/zero-shot-scfoundation"}
+    ],
+    "datasets": [
+      {"label": "Tabula Sapiens (figshare)", "url": "https://figshare.com/projects/Tabula_Sapiens/100973"},
+      {"label": "Cross-tissue Immune Cell Atlas", "url": "https://www.tissueimmunecellatlas.org/"},
+      {"label": "10x Genomics datasets (PBMC 95k)", "url": "http://support.10xgenomics.com/single-cell/datasets"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "none", "summary": "Uses published datasets."},
+    "quantification": {"involvement": "none", "summary": "Not addressed."},
+    "preprocessing": {"involvement": "used", "summary": "2,000 highly variable genes as a baseline representation; model-specific input encoding (Geneformer gene ranks, scGPT 50 expression bins).", "methods": ["Highly variable genes", "Gene rank encoding", "Expression binning"]},
+    "dimensionality_reduction": {"involvement": "core", "summary": "The paper compares cell embeddings (latent spaces) from foundation models with HVG, scVI and Harmony for separating cell types.", "methods": ["Foundation model embeddings", "Variational autoencoder latent space", "PCA"], "tools": ["scGPT", "Geneformer", "scVI"]},
+    "batch_correction": {"involvement": "core", "summary": "Zero-shot batch integration of foundation models versus Harmony and scVI, scored with batch silhouette and principal component regression.", "methods": ["Batch silhouette (ASW)", "Principal component regression score"], "tools": ["Harmony", "scVI", "scGPT", "Geneformer", "scib"]},
+    "clustering": {"involvement": "used", "summary": "Louvain clustering across 20 resolutions on each embedding, scored with NMI and ARI against known labels.", "methods": ["Louvain", "NMI", "ARI", "Silhouette (ASW)"], "tools": ["scib"]},
+    "annotation": {"involvement": "mentioned", "summary": "Motivated by annotation in label-free settings; evaluates whether embeddings separate known cell types, not label assignment itself."},
+    "trajectory": {"involvement": "none", "summary": "Not addressed."},
+    "cell_communication": {"involvement": "none", "summary": "Not addressed."}
+  },
+  "algorithms": [
+    {"name": "scGPT", "role": "compared", "description": "Transformer pretrained with masked expression-bin prediction; 12 layers."},
+    {"name": "Geneformer", "role": "compared", "description": "BERT-style transformer on gene rank order; 6 layers."},
+    {"name": "Highly variable genes", "role": "compared"},
+    {"name": "scVI", "role": "compared"},
+    {"name": "Harmony", "role": "compared"},
+    {"name": "Louvain clustering", "role": "used"}
+  ],
+  "tools": [
+    {"name": "scGPT", "role": "compared", "language": "Python"},
+    {"name": "Geneformer", "role": "compared", "language": "Python"},
+    {"name": "scVI", "role": "compared", "language": "Python"},
+    {"name": "Harmony", "role": "compared"},
+    {"name": "scib", "role": "used", "language": "Python"}
+  ],
+  "cell_types": []
+}

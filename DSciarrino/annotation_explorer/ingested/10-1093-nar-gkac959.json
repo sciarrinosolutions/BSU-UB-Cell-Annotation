@@ -1,0 +1,63 @@
+{
+  "id": "10-1093-nar-gkac959",
+  "doi": "10.1093/nar/gkac959",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text", "url": "https://europepmc.org/article/PMC/PMC9825603"}
+    ],
+    "notes": "The processing pipeline (MAESTRO) is cited rather than described, so the specific QC, batch, clustering and annotation methods are not named in this paper."
+  },
+  "enhanced_abstract": {
+    "tldr": "TISCH2 is a web resource of 190 uniformly processed and annotated tumor scRNA-seq datasets (~6.3 million cells, 50 cancer types, human and mouse), now with cell–cell communication, transcription factor, survival and gene-correlation analyses.",
+    "sections": [
+      {"heading": "What it is", "body": "A tumor microenvironment single-cell portal. Datasets are found by text-mining GEO and ArrayExpress, curated by hand with sample metadata, then all processed through the same MAESTRO workflow: QC, batch removal, clustering, differential expression, cell type annotation, malignant cell classification and gene set enrichment."},
+      {"heading": "Scale", "body": "~6.3M cells from 190 datasets across 50 cancer types and 20 tissues (about triple the first TISCH). 40 datasets include treatment conditions such as immunotherapy, chemotherapy and targeted therapy; immunotherapy datasets get extra responder-vs-nonresponder comparisons."},
+      {"heading": "New analyses", "body": "Cell–cell communication per dataset with CellChat (significant ligand–receptor pairs between cell types); transcription factor enrichment per cluster with LISA; survival hazard ratios across 33 TCGA cancer types; and gene–gene correlation computed on mini-clusters of 30 similar cells to reduce dropout noise."},
+      {"heading": "Example", "body": "SPI1 and STAT1 came out as top regulators of a monocyte/macrophage cluster in head and neck cancer, and that cluster was predicted to suppress CD8 T cells via CD80–CTLA4."}
+    ],
+    "key_findings": [
+      "Uniformly annotated tumor datasets make cross-study comparison of immune cell types possible",
+      "Includes treatment and immunotherapy-response datasets",
+      "All matrices, annotations, DEGs and interaction results are downloadable"
+    ],
+    "limitations": [
+      "Cell type labels come from an automated pipeline; their accuracy isn't benchmarked in this paper",
+      "Methods details are deferred to MAESTRO and the first TISCH paper",
+      "No trajectory analysis yet (planned)"
+    ],
+    "why_it_matters": "Rule 3 (labeled tumor data resource, preferred). A large, cancer-specific source of annotated immune and tumor cells for benchmarking our agent in the setting the group cares about, including monocytes/macrophages and CD8 T cells. Its labels are automated, so they should be checked before being treated as ground truth."
+  },
+  "links": {
+    "code": [
+      {"label": "MAESTRO processing workflow (GitHub)", "url": "https://github.com/liulab-dfci/MAESTRO"}
+    ],
+    "datasets": [
+      {"label": "TISCH2 portal and downloads", "url": "http://tisch.comp-genomics.org/"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "mentioned", "summary": "Collects published tumor scRNA-seq datasets across platforms; platform recorded per dataset."},
+    "quantification": {"involvement": "unknown", "summary": "Not described in this paper (handled by MAESTRO)."},
+    "preprocessing": {"involvement": "used", "summary": "Uniform QC and differential expression via the MAESTRO workflow; gene correlations on averaged mini-clusters of 30 cells.", "methods": ["QC filtering", "Differential expression", "Mini-cluster averaging"], "tools": ["MAESTRO"]},
+    "dimensionality_reduction": {"involvement": "unknown", "summary": "Not described in this paper."},
+    "batch_correction": {"involvement": "used", "summary": "Batch effects between samples removed within MAESTRO; method not named here.", "tools": ["MAESTRO"]},
+    "clustering": {"involvement": "used", "summary": "Cell clustering within MAESTRO; method not named here.", "tools": ["MAESTRO"]},
+    "annotation": {"involvement": "used", "summary": "Uniform cell type annotation and malignant cell classification via MAESTRO, producing consistently labeled TME datasets.", "methods": ["Automated cell type annotation", "Malignant cell classification", "Transcription factor enrichment"], "tools": ["MAESTRO", "LISA"]},
+    "trajectory": {"involvement": "mentioned", "summary": "Planned for a future version."},
+    "cell_communication": {"involvement": "used", "summary": "CellChat run per dataset with standard parameters; significant ligand–receptor pairs (p < 0.05) and communication probabilities shown per cell type.", "methods": ["Ligand–receptor analysis"], "tools": ["CellChat"]}
+  },
+  "algorithms": [
+    {"name": "CellChat", "role": "used"},
+    {"name": "LISA", "role": "used", "description": "Transcription factor enrichment from chromatin and ChIP-seq models."}
+  ],
+  "tools": [
+    {"name": "TISCH2", "role": "proposed", "url": "http://tisch.comp-genomics.org/"},
+    {"name": "MAESTRO", "role": "used", "url": "https://github.com/liulab-dfci/MAESTRO"},
+    {"name": "CellChat", "role": "used", "language": "R"},
+    {"name": "LISA", "role": "used"},
+    {"name": "Hmisc", "role": "used", "language": "R"}
+  ],
+  "cell_types": []
+}

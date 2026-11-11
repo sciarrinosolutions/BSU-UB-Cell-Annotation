@@ -154,27 +154,30 @@ When screening the team's lists (`literature_sweep/verified_papers.csv`,
 `candidates_raw.csv`), add these fields as new columns rather than deleting rows,
 so the decisions can be audited and reversed.
 
-5. Compute the ranking score (next section) and sort by it.
+5. Rank the papers (next section).
 
 ## Ranking
 
-Papers should be **relevant, recent and highly cited**. Each paper gets a score
-from 0 to 1, and the list is sorted by that score:
+Papers should be **relevant, recent and highly cited**. Ranking has two layers:
+
+1. **Tier first.** The relevance rating sorts papers into groups, in this order:
+   `preferred` → `caution` → `later` → `exclude`. Every `preferred` paper ranks
+   above every `caution` paper, and so on.
+2. **Within a tier**, papers are sorted by a score from 0 to 1:
 
 ```
-score = 0.50 × relevance + 0.25 × recency + 0.25 × citation impact
+within-tier score = 0.5 × recency + 0.5 × citation impact
 ```
 
 | Component | How it's computed |
 |---|---|
-| **relevance** | From the rating: `preferred` 1.0, `caution` 0.6, `later` 0.3, `exclude` 0.0 |
 | **recency** | 1.0 for the current year, falling by 0.1 per year, reaching 0 at 10 or more years old. Papers from the last 5 years count as **recent**. |
-| **citation impact** | Citations **per year** since publication (counting the publication year as year 1), as a percentile within the list being ranked (0 = least cited, 1 = most cited) |
+| **citation impact** | Citations **per year** since publication (counting the publication year as year 1), as a percentile within the whole list (0 = least cited, 1 = most cited) |
 
 Why it's built this way:
-- **Relevance carries half the weight**, so Dr. Talkington's rules stay the main
-  factor. A highly cited but out-of-scope paper can't outrank a relevant one on
-  citations alone.
+- **Tiers can't be overtaken.** Dr. Talkington's rules decide the order of the
+  groups, so no amount of citations lifts an out-of-scope paper above a
+  relevant one.
 - **Citations are per year.** Raw counts favor old papers, which would work
   against recency. Dividing by age lets a 2025 paper with 100 citations compete
   with a 2017 paper with 1,000.
@@ -187,12 +190,13 @@ Why it's built this way:
 
 Ties are broken by `markers_defined = yes` first, then by more recent year.
 
-The weights are a starting point, not a rule from Dr. Talkington. Adjust them in
-`literature_sweep/rank_papers.py` if the team wants recency or citations to
-count for more or less.
+The 50/50 split within a tier is a starting point, not a rule from Dr.
+Talkington. This ranking is implemented in
+`annotation_explorer/pipeline/build_index.py`. The earlier single-score ranking
+(`literature_sweep/rank_papers.py`, `ranked_papers*.csv`) weighted relevance at
+50% and let tiers overlap, so it's superseded.
 
-**Citation source:** use **OpenAlex** (`fetch_openalex_citations.py`, then
-`rank_papers.py --citations citations_openalex.csv`). Europe PMC counts only
+**Citation source:** use **OpenAlex** (`literature_sweep/fetch_openalex_citations.py`). Europe PMC counts only
 citations from papers it indexes, and that misses preprint and CS-venue
 citations (e.g. 0 for GenePT and Biomni, where OpenAlex reports 205 and 289),
 and it has no counts for arXiv papers. OpenAlex covers both and usually merges a

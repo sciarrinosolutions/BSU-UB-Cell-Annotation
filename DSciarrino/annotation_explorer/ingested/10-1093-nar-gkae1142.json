@@ -1,0 +1,66 @@
+{
+  "id": "10-1093-nar-gkae1142",
+  "doi": "10.1093/nar/gkae1142",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text (results, methods, data availability)", "url": "https://europepmc.org/article/PMC/PMC11701654"}
+    ],
+    "notes": "Platform paper; methods describe the Gene Expression pipeline as of October 2023. Corpus size (93M+ cells) will have grown since."
+  },
+  "enhanced_abstract": {
+    "tldr": "CZ CELLxGENE Discover hosts over 93 million standardized single cells with consistent, ontology-based metadata, and offers tools to explore single datasets, compare gene expression across the corpus, see computed marker genes per cell type, and stream data for analysis or model training.",
+    "sections": [
+      {"heading": "Problem", "body": "Single-cell data is scattered across portals with inconsistent metadata, which blocks cross-study meta-analysis and training of large models."},
+      {"heading": "Standardized schema", "body": "Every submitted dataset must meet a minimal, versioned schema of 11 required fields (cell type, tissue, disease, assay, ancestry, etc.) using ontologies such as the Cell Ontology and UBERON, and must include raw counts and at least one 2D embedding. CELLxGENE doesn't re-cluster or re-annotate submissions."},
+      {"heading": "Corpus", "body": "93M+ unique cells across 449 tissues and 40 assay types; 63% human and 32% mouse. About 62% of human data is from healthy donors and 38% spans 132 diseases. Ethnic diversity and age groups are underrepresented."},
+      {"heading": "Tools", "body": "Explorer visualizes single datasets of up to ~4.3M cells interactively, with differential expression. Gene Expression averages normalized expression per cell type and tissue across datasets, using the Cell Ontology to roll child types up into parents, and lists 25 computed marker genes per cell type. Census gives Python/R access to the whole corpus through TileDB-SOMA, including out-of-core statistics and PyTorch data loaders."},
+      {"heading": "Validation", "body": "ANOVA found no significant dataset or assay differences in averaged expression for most tested cell types, suggesting aggregation plus log normalization partly reduces batch effects. Computed marker genes recalled 33% of HuBMAP canonical markers across 127 cell types."}
+    ],
+    "key_findings": [
+      "Largest standardized single-cell corpus, labeled with Cell Ontology terms",
+      "Per-cell-type marker genes from a bootstrapped Welch's t-test effect size",
+      "Cell Ontology roll-up handles datasets labeled at different granularity"
+    ],
+    "limitations": [
+      "Cell type labels come from submitters; CELLxGENE doesn't re-annotate them",
+      "Batch effects are only partly reduced; rare cell types remain affected",
+      "Computed markers recall only about a third of HuBMAP canonical markers"
+    ],
+    "why_it_matters": "Rule 3 (labeled data resource, preferred). The reference that CellTypeAgent uses to verify LLM proposals, and a large source of Cell Ontology–labeled immune and tumor data for benchmarking our agent. Its expression summaries are a way for an agent to check a proposed label against real data."
+  },
+  "links": {
+    "code": [
+      {"label": "CELLxGENE source code (GitHub)", "url": "https://github.com/orgs/chanzuckerberg/repositories?&q=cellxgene"},
+      {"label": "Census API (GitHub)", "url": "https://github.com/chanzuckerberg/cellxgene-census"},
+      {"label": "TileDB-SOMA (GitHub)", "url": "https://github.com/single-cell-data/TileDB-SOMA"},
+      {"label": "Normalization analysis code", "url": "https://github.com/chanzuckerberg/cellxgene-manuscript-2023"}
+    ],
+    "datasets": [
+      {"label": "CZ CELLxGENE Discover collections", "url": "https://CellxGene.cziscience.com/collections"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "mentioned", "summary": "Hosts data from 40 transcriptomic assays; only assays without gene-length normalization enter Gene Expression."},
+    "quantification": {"involvement": "mentioned", "summary": "Raw count matrices are required at submission so data can be reused without realignment."},
+    "preprocessing": {"involvement": "used", "summary": "Gene Expression pipeline: drop duplicate cells and cells with <500 genes, normalize to ln(CPTT + 1), mask very low values; marker genes by Welch's t-test with bootstrapped effect sizes. Census adds out-of-core mean, variance and highly variable gene calculations.", "methods": ["QC filtering", "Log normalization (ln CPTT+1)", "Welch's t-test", "Highly variable genes"], "tools": ["TileDB-SOMA", "Scanpy"]},
+    "dimensionality_reduction": {"involvement": "mentioned", "summary": "Submitters must supply at least one 2D embedding (UMAP, t-SNE or PCA) for display.", "methods": ["UMAP", "t-SNE", "PCA"]},
+    "batch_correction": {"involvement": "mentioned", "summary": "No integration is applied; the paper tests how far averaging and log normalization alone reduce batch effects (repeated-measures ANOVA).", "methods": ["Aggregation", "Repeated-measures ANOVA"]},
+    "clustering": {"involvement": "none", "summary": "CELLxGENE doesn't re-cluster submitted data."},
+    "annotation": {"involvement": "core", "summary": "Standardizes submitters' cell type labels to Cell Ontology terms, rolls expression up the ontology, and publishes computed marker genes per cell type and tissue, making it a reference for annotation and its verification.", "methods": ["Cell Ontology standardization", "Ontology roll-up", "Computed marker genes"], "tools": ["CZ CELLxGENE Discover", "Cell Ontology"]},
+    "trajectory": {"involvement": "none", "summary": "Not addressed."},
+    "cell_communication": {"involvement": "none", "summary": "Not addressed."}
+  },
+  "algorithms": [
+    {"name": "Welch's t-test marker genes", "role": "proposed", "description": "10th percentile of effect sizes across pairwise cell type comparisons, bootstrapped; top 25 genes."}
+  ],
+  "tools": [
+    {"name": "CZ CELLxGENE Discover", "role": "proposed", "url": "https://cellxgene.cziscience.com/"},
+    {"name": "CELLxGENE Census", "role": "proposed", "language": "Python, R", "url": "https://github.com/chanzuckerberg/cellxgene-census"},
+    {"name": "TileDB-SOMA", "role": "proposed", "url": "https://github.com/single-cell-data/TileDB-SOMA"},
+    {"name": "Scanpy", "role": "used", "language": "Python"},
+    {"name": "PyTorch", "role": "used", "language": "Python"}
+  ],
+  "cell_types": []
+}

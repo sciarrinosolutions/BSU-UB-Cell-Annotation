@@ -1,0 +1,68 @@
+{
+  "id": "10-48550-arxiv-2505-08844",
+  "doi": "10.48550/arXiv.2505.08844",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "arXiv abstract", "url": "https://arxiv.org/abs/2505.08844"},
+      {"label": "arXiv PDF (full text, appendices)", "url": "https://arxiv.org/pdf/2505.08844"}
+    ],
+    "notes": "Read the full v1 preprint. Exact accuracy numbers are only shown in figures, which weren't readable from the PDF text, so results are described qualitatively."
+  },
+  "enhanced_abstract": {
+    "tldr": "An LLM proposes the top 3 candidate cell types from a cluster's marker genes, then CZ CELLxGENE expression data picks the final label, which beats both LLM-only (GPTCelltype) and database-only annotation and reduces hallucination.",
+    "sections": [
+      {"heading": "Problem", "body": "LLMs like GPT-4 annotate clusters well from marker genes but can hallucinate, and nothing grounds their answer in real expression data."},
+      {"heading": "Method: two stages", "body": "Stage 1: an LLM is prompted with the tissue and marker genes and returns its three most likely cell types, in order. Stage 2: for each candidate, the agent looks up how strongly and how widely the marker genes are expressed in that cell type in CZ CELLxGENE Discover (for the given species and tissue, or across tissues if the tissue is unknown). A selection score adds the LLM's rank to the expression-based ranks, and the highest-scoring candidate wins."},
+      {"heading": "Evaluation", "body": "Nine datasets (303 cell types from 36 tissues), reusing the GPTCelltype benchmark: Human and Mouse Cell Atlas, Tabula Sapiens, HuBMAP Azimuth, GTEx, CNS B-cell lymphoma, colorectal and lung cancer. Scored with GPTCelltype's Cell Ontology agreement score, and compared with GPTCelltype, CELLxGENE alone and PanglaoDB."},
+      {"heading": "Results", "body": "CellTypeAgent beat every comparison method on all nine datasets. Stronger base models (best: o1-preview) gave better results, and the gain over LLM-only annotation was largest with weaker models. With the open-source DeepSeek-R1 it improved by 5.1%, which matters where data privacy rules out closed models. CELLxGENE alone often couldn't separate similar types (e.g. pericytes vs. mural cells); the LLM step narrows the choices first."},
+      {"heading": "What didn't help", "body": "Adding literature snippets (LitSense) or NCBI gene summaries to the prompt made results worse: the LLM over-relied on the pasted text, prompts got costlier, and many papers report markers only in figures or supplements."}
+    ],
+    "key_findings": [
+      "Verification against a real expression database reduces hallucination and improves accuracy",
+      "Using the top 3 LLM candidates worked slightly better than other candidate counts",
+      "More marker genes generally improved annotation",
+      "Can flag mixed populations when told a sample might be a mixture"
+    ],
+    "limitations": [
+      "Short preprint (not peer-reviewed in this version); figure-level numbers not given in text",
+      "Depends on the cell types and tissues present in CELLxGENE",
+      "Takes marker gene lists as input; clustering and marker selection happen upstream"
+    ],
+    "why_it_matters": "Rule 3 (algorithm, preferred) and Dr. Talkington's own 'useful' example. It's the closest design to our project: an agent that combines LLM reasoning with database verification. The finding that pasting literature into prompts hurts accuracy is directly relevant to how our agent should use the ingested papers."
+  },
+  "links": {
+    "code": [
+      {"label": "CellTypeAgent (GitHub)", "url": "https://github.com/jianghao-zhang/CellTypeAgent/"}
+    ],
+    "datasets": [
+      {"label": "CZ CELLxGENE Discover (verification database)", "url": "https://cellxgene.cziscience.com/"},
+      {"label": "HuBMAP Azimuth marker genes", "url": "https://azimuth.hubmapconsortium.org/"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "none", "summary": "Uses published annotated datasets."},
+    "quantification": {"involvement": "none", "summary": "Not addressed."},
+    "preprocessing": {"involvement": "mentioned", "summary": "Takes the marker gene lists from the GPTCelltype benchmark; marker selection is upstream of the method."},
+    "dimensionality_reduction": {"involvement": "none", "summary": "Not addressed."},
+    "batch_correction": {"involvement": "none", "summary": "Not addressed."},
+    "clustering": {"involvement": "mentioned", "summary": "Assumes clusters already exist; annotates one cluster's marker list at a time."},
+    "annotation": {"involvement": "core", "summary": "Two-stage agent: LLM proposes ranked top-3 candidates, then CELLxGENE scaled expression and expressed-fraction of the markers re-rank them; the top-scoring candidate is the label. Optional literature and gene-summary tools were tested and rejected.", "methods": ["LLM candidate generation (top 3)", "Database verification with CELLxGENE expression", "Rank-sum selection score", "Mixture detection prompt", "Cell Ontology agreement scoring"], "tools": ["GPT-4o", "o1-preview", "DeepSeek-R1", "CZ CELLxGENE Discover", "LitSense", "NCBI Gene"]},
+    "trajectory": {"involvement": "none", "summary": "Not addressed."},
+    "cell_communication": {"involvement": "none", "summary": "Not addressed."}
+  },
+  "algorithms": [
+    {"name": "CellTypeAgent selection score", "role": "proposed", "description": "LLM candidate rank + rank of summed marker expression + rank of expressed fraction + cross-tissue expression rank."},
+    {"name": "GPTCelltype", "role": "compared", "description": "LLM-only baseline."},
+    {"name": "CELLxGENE-only lookup", "role": "compared", "description": "Pick the cell type with the highest average marker expression, without an LLM."},
+    {"name": "PanglaoDB lookup", "role": "compared"}
+  ],
+  "tools": [
+    {"name": "CellTypeAgent", "role": "proposed", "url": "https://github.com/jianghao-zhang/CellTypeAgent/"},
+    {"name": "CZ CELLxGENE Discover", "role": "used", "url": "https://cellxgene.cziscience.com/"},
+    {"name": "GPTCelltype", "role": "compared", "language": "R", "url": "https://github.com/Winnie09/GPTCelltype"},
+    {"name": "PanglaoDB", "role": "compared", "url": "https://panglaodb.se/"}
+  ],
+  "cell_types": []
+}

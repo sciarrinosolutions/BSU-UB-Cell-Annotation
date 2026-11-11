@@ -1,0 +1,80 @@
+{
+  "id": "10-1016-j-cell-2021-04-048",
+  "doi": "10.1016/j.cell.2021.04.048",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC full text (results, discussion, STAR Methods)", "url": "https://europepmc.org/article/PMC/PMC8238499"}
+    ],
+    "notes": "Vaccination-response and multi-modality benchmark sections were skimmed. Level 3 marker lists are in Figure S4 and weren't read; markers below are those named in the text (several are surface proteins measured by CITE-seq)."
+  },
+  "enhanced_abstract": {
+    "tldr": "Seurat v4 introduces weighted-nearest-neighbor (WNN) analysis to combine RNA with surface protein (or other modalities) per cell, uses it to build a 211,000-cell CITE-seq reference of human PBMCs annotated at three levels (8/30/57 types), and maps new RNA-only datasets onto it, the basis of the Azimuth web app.",
+    "sections": [
+      {"heading": "Problem", "body": "RNA and protein each separate some cell types better than the other: CD4 vs. CD8 T cells blur in RNA but split cleanly by protein, while dendritic cells are clear in RNA but not with a limited antibody panel. Analysis needs to learn, per cell, which modality to trust."},
+      {"heading": "WNN method", "body": "Build a k-nearest-neighbor graph per modality, predict each cell's profile from its neighbors in each modality, turn the prediction accuracy into per-cell modality weights (summing to 1), then build one combined neighbor graph from the weighted similarities. That graph feeds UMAP, clustering and trajectory analysis."},
+      {"heading": "PBMC reference", "body": "CITE-seq of 210,911 PBMCs from eight vaccine-trial volunteers at three timepoints, with up to 228 antibodies. Samples integrated with Seurat anchors (SCTransform + reciprocal PCA), then WNN clustering found 57 clusters, grouped into 30 and 8 broader labels, including very rare AXL+ SIGLEC6+ dendritic cells and new lymphoid subsets validated by flow cytometry."},
+      {"heading": "Reference mapping", "body": "Supervised PCA learns the transcriptome directions that best reproduce the WNN structure. Query scRNA-seq data are projected into that space, matched with anchors (mutual nearest neighbors), and labeled by anchor-weighted voting, then placed on the reference UMAP. Applied to COVID-19 PBMCs, it split T cells into 12 groups versus 6 in the original study and found MAIT cell depletion, confirmed by CyTOF."},
+      {"heading": "Benchmark", "body": "Against scArches on a held-out CITE-seq query, the two agreed on 67% of cells; where they disagreed, the held-out protein data supported Seurat's label 79% of the time."}
+    ],
+    "key_findings": [
+      "Combining modalities resolves immune states that RNA or protein alone blur together",
+      "A protein-validated, three-level PBMC reference that RNA-only data can be mapped onto in minutes (Azimuth)",
+      "Cells absent from the reference (e.g. neutrophils in COVID-19) can't be mapped and land on cluster borders"
+    ],
+    "limitations": [
+      "PBMC reference only: few granulocytes or erythrocytes, and no tumor tissue",
+      "WNN assumes the modalities don't define conflicting cell states",
+      "Reference mapping can only assign labels present in the reference"
+    ],
+    "why_it_matters": "Rule 3 (algorithm and labeled reference, preferred). Seurat is the most-used toolkit across the ingested papers, and its Azimuth PBMC reference gives protein-validated immune labels, a strong ground truth for testing our agent on monocytes and T cell subsets."
+  },
+  "links": {
+    "code": [
+      {"label": "Seurat (GitHub, GPLv3)", "url": "https://www.github.com/satijalab/seurat"},
+      {"label": "Azimuth reference-mapping web app", "url": "https://azimuth.hubmapconsortium.org/"}
+    ],
+    "datasets": [
+      {"label": "Multimodal PBMC atlas (browse/download)", "url": "https://atlas.fredhutch.org/nygc/multimodal-pbmc/"},
+      {"label": "CITE-seq / ECCITE-seq data GSE164378", "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE164378"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "used", "summary": "CITE-seq on 10x Chromium 3′ (228 antibodies) and ECCITE-seq on 10x 5′ (54 antibodies, with TCR), sequenced on NovaSeq.", "methods": ["CITE-seq", "ECCITE-seq", "Cell hashing"], "tools": ["10x Genomics Chromium"]},
+    "quantification": {"involvement": "used", "summary": "RNA aligned to GRCh38 with Cell Ranger 3.1.0; antibody and hashtag counts with Alevin.", "tools": ["Cell Ranger", "Alevin"]},
+    "preprocessing": {"involvement": "used", "summary": "Removed cells with <500 or >6,000 genes or excessive antibody counts; doublets by HTODemux plus a neighbor-based within-sample doublet filter; SCTransform for RNA and CLR normalization for protein.", "methods": ["QC filtering", "Doublet detection", "SCTransform normalization", "CLR normalization"], "tools": ["Seurat"]},
+    "dimensionality_reduction": {"involvement": "core", "summary": "PCA per modality (40 RNA / 50 protein dims) feeds WNN; supervised PCA defines the reference space for mapping; queries projected onto the reference UMAP.", "methods": ["PCA", "Supervised PCA", "Weighted nearest neighbor graph", "UMAP projection"], "tools": ["Seurat", "uwot"]},
+    "batch_correction": {"involvement": "used", "summary": "Anchor-based integration with SCTransform and reciprocal PCA across 24 samples, with day-0 samples as reference; anchors also align queries to the reference.", "methods": ["Seurat anchor integration", "Reciprocal PCA", "Mutual nearest neighbors"], "tools": ["Seurat"]},
+    "clustering": {"involvement": "used", "summary": "Shared-nearest-neighbor graph from the WNN graph, clustered with the SLM algorithm at high resolution, then clusters merged by differential expression and rare types sub-clustered.", "methods": ["SNN graph", "SLM clustering"], "tools": ["Seurat"]},
+    "annotation": {"involvement": "core", "summary": "Three-level manual annotation of the reference from RNA and protein markers; queries labeled by anchor-weighted voting after supervised-PCA projection (Azimuth). Benchmarked against scArches.", "methods": ["Marker-based manual annotation", "Reference mapping (label transfer)", "Anchor-weighted voting"], "tools": ["Seurat", "Azimuth", "scArches"]},
+    "trajectory": {"involvement": "mentioned", "summary": "WNN graph can feed trajectory inference; continuous naive-to-memory B cell and NK cell gradients described."},
+    "cell_communication": {"involvement": "none", "summary": "Not addressed."}
+  },
+  "algorithms": [
+    {"name": "Weighted nearest neighbor (WNN)", "role": "proposed", "description": "Per-cell modality weights from cross-modality neighbor predictions, combined into one neighbor graph."},
+    {"name": "Supervised PCA", "role": "proposed", "description": "Projection that best captures the WNN structure, used for mapping RNA-only queries."},
+    {"name": "Seurat anchor integration", "role": "used"},
+    {"name": "SLM clustering", "role": "used"},
+    {"name": "scArches", "role": "compared"},
+    {"name": "MOFA+", "role": "compared"},
+    {"name": "totalVI", "role": "compared"}
+  ],
+  "tools": [
+    {"name": "Seurat v4", "role": "proposed", "language": "R", "url": "https://www.github.com/satijalab/seurat"},
+    {"name": "Azimuth", "role": "proposed", "url": "https://azimuth.hubmapconsortium.org/"},
+    {"name": "Cell Ranger", "role": "used"},
+    {"name": "Alevin", "role": "used"},
+    {"name": "scArches", "role": "compared", "language": "Python"}
+  ],
+  "cell_types": [
+    {"name": "Plasmacytoid DC (pDC)", "positive_markers": ["CD123 (protein)"], "context": "Human PBMC; single-marker enrichment panel"},
+    {"name": "MAIT cell", "positive_markers": ["CD3 (protein)", "CD161 (protein)", "TCR Vα7.2 (protein)"], "context": "Human PBMC"},
+    {"name": "CD4 naive T cell", "positive_markers": ["CD4 (protein)", "CD45RA (protein)", "CD45RB (protein)"], "context": "Human PBMC"},
+    {"name": "AXL+ SIGLEC6+ dendritic cell (ASDC)", "positive_markers": ["AXL", "SIGLEC6"], "context": "Rare (~0.02%) blood DC population"},
+    {"name": "Regulatory T cell", "positive_markers": ["CD25 (protein)"], "context": "Used to validate mapped labels"},
+    {"name": "Circulating ILC", "positive_markers": ["CD117 (protein)", "CD25 (protein)"], "context": "Used to validate mapped labels"},
+    {"name": "Naive T cell", "positive_markers": ["CD45RA (protein)"], "negative_markers": ["CD45RO (protein)"]},
+    {"name": "Memory T cell", "positive_markers": ["CD45RO (protein)"], "negative_markers": ["CD45RA (protein)"]}
+  ]
+}

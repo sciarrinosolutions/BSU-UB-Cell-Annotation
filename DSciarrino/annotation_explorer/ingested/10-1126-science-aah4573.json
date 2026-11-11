@@ -1,0 +1,48 @@
+{
+  "id": "10-1126-science-aah4573",
+  "doi": "10.1126/science.aah4573",
+  "ingestion": {
+    "agent": "Claude (claude-opus-5-5), manual run",
+    "date": "2026-11-10",
+    "sources": [
+      {"label": "Europe PMC abstract", "url": "https://europepmc.org/article/MED/28428369"}
+    ],
+    "notes": "ABSTRACT ONLY. Europe PMC has the author manuscript as free-to-read but doesn't offer its full text for download, so methods, marker genes and subset names beyond the abstract were not read. Re-ingest from the full text (PMC5775029) before using this paper as a marker source."
+  },
+  "enhanced_abstract": {
+    "tldr": "Single-cell RNA-seq of ~2,400 enriched human blood cells defines six dendritic cell and four monocyte subtypes, including a new pDC-like DC subset, a split within CD1C+ DCs, and a circulating cDC progenitor.",
+    "sections": [
+      {"heading": "Goal", "body": "Resolve the identities of, and relationships between, human blood dendritic cell and monocyte subtypes, whose taxonomy was incomplete."},
+      {"heading": "What they found", "body": "Six DC and four monocyte subtypes in blood. A new DC subset shares features with plasmacytoid DCs but strongly activates T cells, which redefines what counts as a pDC. The CD1C+ DC subset splits in two. The work also places blastic plasmacytoid DC neoplasia cells relative to healthy DCs and identifies a circulating progenitor of conventional DCs."}    ],
+    "key_findings": [
+      "Four monocyte subtypes and six DC subtypes in human blood",
+      "A pDC-like DC subset that potently activates T cells",
+      "CD1C+ DCs comprise two subsets"
+    ],
+    "limitations": [
+      "Healthy blood only; not tumor tissue",
+      "Small number of cells (~2,400) by current standards",
+      "This record is based on the abstract alone"
+    ],
+    "why_it_matters": "Rule 4 (experimental paper that defines cell types with markers, preferred). A core reference for monocyte and DC subsets, one of the group's focus lineages. The actual marker sets must be extracted from the full text before it can supply annotation rules."
+  },
+  "links": {
+    "other": [
+      {"label": "Full text (Europe PMC author manuscript)", "url": "https://europepmc.org/article/PMC/PMC5775029"}
+    ]
+  },
+  "workflow": {
+    "sequencing": {"involvement": "used", "summary": "Single-cell RNA-seq of ~2,400 human blood cells (protocol not read)."},
+    "quantification": {"involvement": "unknown", "summary": "Not determinable from the abstract."},
+    "preprocessing": {"involvement": "unknown", "summary": "Not determinable from the abstract."},
+    "dimensionality_reduction": {"involvement": "unknown", "summary": "Not determinable from the abstract."},
+    "batch_correction": {"involvement": "unknown", "summary": "Not determinable from the abstract."},
+    "clustering": {"involvement": "used", "summary": "Unbiased clustering is implied by the discovery of subtypes; method not read."},
+    "annotation": {"involvement": "core", "summary": "The paper's contribution is a revised taxonomy of blood DC and monocyte subtypes, which other studies use to label clusters."},
+    "trajectory": {"involvement": "mentioned", "summary": "Identifies a circulating cDC progenitor and relates neoplastic pDC-like cells to healthy DCs; methods not read."},
+    "cell_communication": {"involvement": "unknown", "summary": "Not determinable from the abstract."}
+  },
+  "algorithms": [],
+  "tools": [],
+  "cell_types": []
+}
