@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help: How papers are ranked</title>
+  <link rel="stylesheet" href="help.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html">Annotation Explorer <span>· Help</span></a>
+    <a class="back" href="../index.html">← Back to the app</a>
+  </header>
+  <div class="wrap">
+    <nav class="toc" id="toc" aria-label="Help topics"></nav>
+    <main>
+      <h1>How papers are ranked</h1>
+      <p class="lede">Ranking has two layers: a relevance <b>tier</b> from the screening rules, then
+        <b>recency and citations</b> within each tier. No paper is ever dropped.</p>
+      <p>The full rules are in <code>DSciarrino/SKILLS.md</code>; this page summarizes them.</p>
+
+      <h2 id="tiers">Layer 1: relevance tier</h2>
+      <p>Every paper gets one rating. Tiers are listed in this order, and every paper in a higher tier ranks
+        above every paper in a lower one.</p>
+      <table>
+        <tr><th>Tier</th><th>Meaning</th></tr>
+        <tr><td><span class="tier preferred">Preferred</span></td><td>Directly helps build the initial annotation algorithm. Read these first.</td></tr>
+        <tr><td><span class="tier caution">Use with caution</span></td><td>Broad or general; useful for orientation and for finding other papers.</td></tr>
+        <tr><td><span class="tier later">Later (refinement)</span></td><td>Relevant but too narrow for the first build; revisit during refinement.</td></tr>
+        <tr><td><span class="tier exclude">Out of scope</span></td><td>Kept at the bottom with the reason recorded, so the decision can be reversed.</td></tr>
+      </table>
+
+      <h3 id="rules">The screening rules</h3>
+      <p>Applied in order; the first rule that decides the rating wins. The rule number appears as a tag on
+        each paper.</p>
+      <ol>
+        <li><b>Out of scope → Out of scope:</b> disease outside cancer, the microbiome. Exceptions: algorithm,
+          benchmark and dataset papers whose non-cancer samples are only test data go on to rule 3; reusable
+          cell reference maps outside cancer rate <i>Later</i>.</li>
+        <li><b>Too specific → Later:</b> one subtype in one disease state, or one particular process.</li>
+        <li><b>Algorithm papers → Preferred:</b> methods for cell type identification or annotation, including
+          LLM and agent-based ones. Benchmarks and labeled datasets count here too.</li>
+        <li><b>Experimental papers → Preferred only if they define markers:</b> a clear marker set for a cell
+          type makes an experimental paper a direct source of rules.</li>
+        <li><b>Very general papers → Use with caution.</b></li>
+      </ol>
+      <p>"Cell type" versus "cell state" wording is never used as a filter, because the terminology isn't
+        standardized.</p>
+      <p>Dr. Talkington's own examples: <i>CellTypeAgent</i> rates Preferred (an agent-based algorithm close to
+        this project); the <i>CD4+ T cell reference map</i> in viral infection rates Later (not cancer, and a
+        single subtype).</p>
+
+      <h2 id="within-tier">Layer 2: within a tier</h2>
+      <pre><code>within-tier score = 0.5 × recency + 0.5 × citation score</code></pre>
+      <table>
+        <tr><th>Score</th><th>How it's calculated</th></tr>
+        <tr><td>Recency</td><td>1.0 for the current year, falling by 0.1 per year, reaching 0 at 10 or more
+          years old. Papers from the last 5 years get the <i>recent</i> tag.</td></tr>
+        <tr><td>Citation score</td><td>OpenAlex citations <b>per year</b> since publication, turned into a
+          percentile across all papers (0 = least cited, 1 = most cited). Papers with no count get a neutral
+          0.5.</td></tr>
+      </table>
+      <ul>
+        <li><b>Per year</b> so newer papers can compete with older ones.</li>
+        <li><b>Percentiles</b> so a few papers with thousands of citations don't flatten everyone else.</li>
+        <li><b>Ties</b> go to papers that define markers, then to the more recent paper.</li>
+      </ul>
+      <p>The three scores appear as bars in each paper's <a href="papers.html#ranking-box">Ranking box</a>.</p>
+
+      <h2 id="who-decides">Who decides the tiers</h2>
+      <p>Ratings were assigned by applying the rules in <code>SKILLS.md</code> and are recorded in
+        <code>literature_sweep/screening_decisions.csv</code>, one row per paper with the rule and a reason.
+        Some are flagged <i>needs review</i>, and a few cases are listed in <code>SKILLS.md</code> as open
+        questions for Dr. Talkington. The 50/50 recency/citation split is a starting point, not one of her
+        rules.</p>
+      <h3 id="changing">Changing a rating</h3>
+      <ol>
+        <li>Edit the paper's row in <code>literature_sweep/screening_decisions.csv</code> (relevance, rule, reason).</li>
+        <li>Rename or move <code>literature_sweep/screened_papers.csv</code> (the script won't overwrite it), then
+          run <code>python apply_screening.py</code> in <code>literature_sweep/</code>.</li>
+        <li>Run <code>python pipeline/build_index.py</code> in <code>annotation_explorer/</code> and reload the app.</li>
+      </ol>
+
+      <footer class="page-foot">Last reviewed 2026-11-10.</footer>
+    </main>
+  </div>
+  <script src="help.js"></script>
+</body>
+</html>

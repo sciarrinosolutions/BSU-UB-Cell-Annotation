@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help: Adding papers (ingestion)</title>
+  <link rel="stylesheet" href="help.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html">Annotation Explorer <span>· Help</span></a>
+    <a class="back" href="../index.html">← Back to the app</a>
+  </header>
+  <div class="wrap">
+    <nav class="toc" id="toc" aria-label="Help topics"></nav>
+    <main>
+      <h1>Adding papers (ingestion)</h1>
+      <p class="lede">An <b>ingestion agent</b> reads each paper and writes a structured record: the summary,
+        links, workflow mapping, tools and marker definitions you see in the app. For now Claude does this by
+        hand; an automated agent can take over later without changing the app.</p>
+
+      <h2 id="steps">Steps</h2>
+      <p>Run these in the <code>annotation_explorer</code> folder.</p>
+      <ol>
+        <li><b>See what's next.</b> Lists the highest-ranked papers that haven't been ingested:
+          <pre><code>python pipeline/build_index.py --pending 10</code></pre></li>
+        <li><b>Download the text.</b> Saves the best free version (Europe PMC full text, the arXiv PDF, or
+          the abstract) to <code>sources/&lt;id&gt;/paper.md</code>:
+          <pre><code>python pipeline/fetch_sources.py --next 5</code></pre>
+          or name papers: <code>python pipeline/fetch_sources.py &lt;id&gt; &lt;id&gt;</code>.</li>
+        <li><b>Agent reads and writes.</b> The agent reads <code>paper.md</code> and writes
+          <code>ingested/&lt;id&gt;.json</code>, following <code>AGENT_INGEST.md</code>.</li>
+        <li><b>Rebuild.</b> Checks every record, re-ranks and regenerates the app's data:
+          <pre><code>python pipeline/build_index.py</code></pre>
+          Then reload the app.</li>
+      </ol>
+      <p>A paper's id is its DOI with punctuation replaced by dashes, e.g. <code>10.1038/s41592-024-02235-4</code>
+        → <code>10-1038-s41592-024-02235-4</code>. A pending paper's abstract panel shows its id and these
+        commands.</p>
+
+      <h2 id="record">What a record contains</h2>
+      <table>
+        <tr><th>Part</th><th>Shown in the app as</th></tr>
+        <tr><td><code>ingestion</code></td><td>The source line: what was read, when, by which agent, and notes.</td></tr>
+        <tr><td><code>enhanced_abstract</code></td><td>One-line summary, sections, findings, limitations, why it matters.</td></tr>
+        <tr><td><code>links</code></td><td>Code, datasets and other links in the Links box.</td></tr>
+        <tr><td><code>workflow</code></td><td>The nine workflow steps and their involvement.</td></tr>
+        <tr><td><code>algorithms</code>, <code>tools</code></td><td>Lists with roles (proposed, used, compared).</td></tr>
+        <tr><td><code>cell_types</code></td><td>The marker definitions table.</td></tr>
+      </table>
+      <p>The exact format is defined in <code>schema/ingested_paper.schema.json</code>. A record that doesn't
+        match is reported by the build and left out of the app until it's fixed.</p>
+
+      <h2 id="agent-rules">Rules the agent follows</h2>
+      <ul>
+        <li>Everything comes from the text it read, never from memory. What it couldn't read goes in the notes.</li>
+        <li>Links must appear in the paper or be checked to work.</li>
+        <li>Summaries are written in its own words.</li>
+        <li>Workflow steps it can't judge (e.g. abstract only) are marked <i>unknown</i>.</li>
+        <li>Baselines are listed with role <i>compared</i>.</li>
+        <li>Only explicit marker definitions go in <code>cell_types</code>; it leaves the list empty rather than guess.</li>
+      </ul>
+
+      <h2 id="vocabulary">The tool and method vocabulary</h2>
+      <p><code>vocab/vocabulary.json</code> lists standard names for tools and methods, with aliases, so usage
+        can be counted across papers (e.g. <i>SCANPY</i> → <i>Scanpy</i>; <i>Louvain (SNN graph)</i> →
+        <i>SNN graph clustering</i>). A trailing version (<i>Seurat v4</i>, <i>Monocle 3</i>) is split off
+        automatically.</p>
+      <p>Names that aren't in the vocabulary are still counted under their own names, marked <b>*</b> in the
+        app, and listed in <code>cache/unlisted_names.json</code> after each build. Add them to the vocabulary,
+        as a new entry or as an alias of an existing one, when they're likely to come up again.</p>
+
+      <h2 id="storage">Where things are stored</h2>
+      <table>
+        <tr><th>Path</th><th>Committed?</th><th>Notes</th></tr>
+        <tr><td><code>ingested/</code></td><td>Yes</td><td>The agent's records.</td></tr>
+        <tr><td><code>web/data/papers.json</code></td><td>Yes</td><td>Built by <code>build_index.py</code>; don't edit by hand.</td></tr>
+        <tr><td><code>cache/</code></td><td>Yes</td><td>Citation histories and the unlisted-names report.</td></tr>
+        <tr><td><code>sources/</code></td><td>No</td><td>Downloaded full texts, which may not be redistributable.</td></tr>
+      </table>
+
+      <h2 id="maintaining-help">Maintaining these help pages</h2>
+      <p>The help is part of the app and should change with it:</p>
+      <ul>
+        <li>Pages are plain HTML in <code>web/help/</code>, sharing <code>help.css</code>. The page list
+          (and menu) is in <code>help.js</code>.</li>
+        <li>When a feature is added or changed, update the matching page and its "Last reviewed" date.</li>
+        <li>The app links to specific sections (<code>help/&lt;page&gt;.html#&lt;section&gt;</code>). Keep
+          section ids stable, or update the links.</li>
+        <li><code>build_index.py</code> runs <code>pipeline/check_help.py</code>, which reports broken help links
+          and section anchors, links from the app to missing help sections, and pages missing from the menu. Run
+          it on its own with <code>python pipeline/check_help.py</code>.</li>
+        <li>Avoid writing current counts into the help; the overview page reads them live from the data.</li>
+      </ul>
+
+      <footer class="page-foot">Last reviewed 2026-11-10.</footer>
+    </main>
+  </div>
+  <script src="help.js"></script>
+</body>
+</html>

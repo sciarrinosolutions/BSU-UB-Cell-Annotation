@@ -81,6 +81,21 @@ button { font: inherit; color: inherit; }
 .brand h1 { font-size: 16px; }
 .sub { margin: 0; color: var(--muted); font-size: 12px; }
 .stats { display: flex; gap: 18px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.top-right { display: flex; align-items: center; gap: 18px; }
+.help-button {
+  border: 1px solid var(--border); border-radius: 8px; padding: 4px 12px; font-size: 13px; font-weight: 600;
+  color: var(--text); background: var(--surface-2);
+}
+.help-button:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+/* Small "?" links into the help pages */
+.help-link {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 17px; height: 17px; border-radius: 50%; border: 1px solid var(--border);
+  font-size: 11px; font-weight: 700; line-height: 1; color: var(--muted); background: var(--surface);
+  vertical-align: middle; text-transform: none; letter-spacing: 0;
+}
+.help-link:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+.control-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .stats b { color: var(--text); font-size: 15px; display: block; font-variant-numeric: tabular-nums; }
 
 /* Layout: list on the left, two stacked panels on the right */

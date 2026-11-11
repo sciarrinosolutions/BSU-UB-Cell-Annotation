@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help: Workflow panel</title>
+  <link rel="stylesheet" href="help.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html">Annotation Explorer <span>· Help</span></a>
+    <a class="back" href="../index.html">← Back to the app</a>
+  </header>
+  <div class="wrap">
+    <nav class="toc" id="toc" aria-label="Help topics"></nav>
+    <main>
+      <h1>Workflow panel</h1>
+      <p class="lede">The bottom-right panel maps papers onto the steps of a scRNA-seq analysis. It has two
+        views, switched with the toggle above the diagram: <b>This paper</b> and <b>All ingested papers</b>.</p>
+
+      <h2 id="steps">The workflow steps</h2>
+      <table>
+        <tr><th>Step</th><th>Covers</th></tr>
+        <tr><td>scRNA-seq</td><td>The sequencing technology or protocol (e.g. 10x Chromium, CITE-seq, Smart-seq2).</td></tr>
+        <tr><td>Quantification</td><td>Turning reads into a count matrix (e.g. Cell Ranger, Alevin).</td></tr>
+        <tr><td>Expression matrix &amp; preprocessing</td><td>QC filtering, doublets, normalization, highly
+          variable genes, differential expression / marker selection.</td></tr>
+        <tr><td>Dimensionality reduction</td><td>PCA, UMAP, t-SNE, learned embeddings.</td></tr>
+        <tr><td>Batch correction</td><td>Integrating samples or datasets (e.g. Seurat anchors, Harmony, scVI).</td></tr>
+        <tr><td>Clustering</td><td>Grouping cells (e.g. SNN graph clustering, Louvain, Leiden).</td></tr>
+        <tr><td>Annotation</td><td>Assigning cell type labels; the project's main focus.</td></tr>
+        <tr><td>Trajectory</td><td>Ordering cells along differentiation or time.</td></tr>
+        <tr><td>Cell–cell communication</td><td>Ligand–receptor interaction analysis.</td></tr>
+      </table>
+
+      <h2 id="this-paper">"This paper" view</h2>
+      <p>Each step is colored by how the selected paper relates to it:</p>
+      <table>
+        <tr><th>Label</th><th>Meaning</th></tr>
+        <tr><td><b>Core contribution</b> (dark)</td><td>The paper's main contribution is at this step.</td></tr>
+        <tr><td><b>Used</b> (light)</td><td>The paper performs this step with existing methods.</td></tr>
+        <tr><td><b>Mentioned</b> (dashed outline)</td><td>Discussed, assumed or only shown, not performed.</td></tr>
+        <tr><td><b>Not addressed</b> (faint)</td><td>The paper doesn't cover this step.</td></tr>
+        <tr><td><b>Unknown</b> (dotted)</td><td>The agent couldn't tell from what it read, usually because only
+          the abstract was available.</td></tr>
+      </table>
+      <p>Click a step (or <kbd>Tab</kbd> to it and press <kbd>Enter</kbd>) to see a short description of what
+        the paper does there, plus the methods and tools it names, and every algorithm and tool in the paper
+        with its role: <i>proposed</i> (the paper's own), <i>used</i>, or <i>compared</i> (a baseline).</p>
+      <p>Tool and method names with a highlight on hover are clickable: they open that tool's
+        <a href="#tool-cards">card</a> in the "All ingested papers" view.</p>
+
+      <h2 id="all-papers">"All ingested papers" view</h2>
+      <p>The same diagram, now summarizing every ingested paper:</p>
+      <ul>
+        <li><b>Shading</b>: the darker a step, the larger the share of papers that perform it (core or used).</li>
+        <li><b>Box label</b>: e.g. <i>9/13 papers · Seurat</i> means 9 of 13 papers perform the step and Seurat
+          is its most-used tool. Papers marked <i>unknown</i> for a step are left out of that step's total.</li>
+      </ul>
+      <p>Click a step to see ranked bar charts of its <b>tools</b> and <b>methods</b> (top 12 each). Hover a bar for
+        a breakdown by role; click it to open the tool card. A <b>*</b> after a name means it isn't in the
+        vocabulary yet (<a href="ingestion.html#vocabulary">vocabulary</a>).</p>
+
+      <h3 id="counting">How usage is counted</h3>
+      <p>Choose the measure in the drop-down:</p>
+      <table>
+        <tr><th>Measure</th><th>Counts</th><th>Answers</th></tr>
+        <tr><td>Papers using it</td><td>Papers that use or propose the tool at this step</td><td>What do people actually run?</td></tr>
+        <tr><td>Used as a baseline</td><td>Papers that compare against it</td><td>What do new methods benchmark against?</td></tr>
+        <tr><td>Proposed here</td><td>Papers where it's the paper's own method</td><td>Which new methods target this step?</td></tr>
+        <tr><td>Citation-weighted</td><td>Sum of the citation scores (0–1) of papers using it</td><td>What do the most-cited papers use?</td></tr>
+      </table>
+      <ul>
+        <li>Each paper counts <b>once per tool</b> per step, however often the tool is mentioned.</li>
+        <li><b>Mentioned-only</b> uses aren't counted under any measure, so a tool someone only names doesn't
+          get credit as if they ran it.</li>
+        <li>Name variants count as one tool: <i>Seurat</i>, <i>Seurat v4</i> and <i>Seurat v5</i> are all Seurat.
+          Versions are shown on the tool card.</li>
+        <li><b>Preferred tier only</b> restricts every count (and the coverage numbers) to papers in the
+          preferred tier.</li>
+      </ul>
+      <div class="warn"><p>The counts describe the papers ingested so far, which lean toward annotation-method
+        papers. Treat them as a demonstration until many more papers are ingested; see
+        <a href="limitations.html#sample">limitations</a>.</p></div>
+
+      <h2 id="tool-cards">Tool cards</h2>
+      <p>A tool card summarizes one tool or method across all ingested papers:</p>
+      <ul>
+        <li>Its kind (toolkit, database, LLM…), language, the versions seen and a link.</li>
+        <li><b>By workflow step</b>: how many papers use it at each step. Click a step to jump to its chart.</li>
+        <li><b>Papers</b>: every paper that uses it and in what role. Click one to open it.</li>
+        <li><b>Show only these papers in the list</b>: filters the paper list to them. Clear it with the
+          <b>×</b> on the chip above the list.</li>
+      </ul>
+      <p>Use <b>← Back</b> to return to the step's charts.</p>
+
+      <footer class="page-foot">Last reviewed 2026-11-10.</footer>
+    </main>
+  </div>
+  <script src="help.js"></script>
+</body>
+</html>

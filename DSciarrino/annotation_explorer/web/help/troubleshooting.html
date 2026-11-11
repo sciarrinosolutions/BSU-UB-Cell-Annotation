@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help: Troubleshooting</title>
+  <link rel="stylesheet" href="help.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html">Annotation Explorer <span>· Help</span></a>
+    <a class="back" href="../index.html">← Back to the app</a>
+  </header>
+  <div class="wrap">
+    <nav class="toc" id="toc" aria-label="Help topics"></nav>
+    <main>
+      <h1>Troubleshooting</h1>
+      <p class="lede">Common problems and how to fix them.</p>
+
+      <h2 id="data-not-loading">"Couldn't load data/papers.json"</h2>
+      <p>Browsers block a page opened straight from disk (<code>file://…</code>) from loading other files. Serve
+        the app instead, from the <code>annotation_explorer</code> folder:</p>
+      <pre><code>python -m http.server 8765 --directory web</code></pre>
+      <p>and open <code>http://localhost:8765</code>. If it still fails, the data file may not exist yet: run
+        <code>python pipeline/build_index.py</code> first.</p>
+
+      <h2 id="port-in-use">"Address already in use" when starting the server</h2>
+      <p>Another server is already using port 8765, possibly an earlier copy of the app; try opening
+        <code>http://localhost:8765</code>. Otherwise use another port, e.g.
+        <code>python -m http.server 8766 --directory web</code>.</p>
+
+      <h2 id="changes-not-showing">A new or edited paper doesn't show up</h2>
+      <ul>
+        <li>Run <code>python pipeline/build_index.py</code>; the app only reads the built data file.</li>
+        <li>Reload the page. If the browser still shows old data, do a hard reload
+          (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>, or <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> on a Mac).</li>
+        <li>Check the build output for <i>Skipped invalid ingestion records</i>: a record with a mistake is left
+          out until it's fixed, and the message says what's wrong.</li>
+        <li>The record's file name must be the paper's id (<code>&lt;id&gt;.json</code>) and its <code>id</code>
+          field must match. See <a href="ingestion.html#steps">adding papers</a>.</li>
+      </ul>
+
+      <h2 id="duplicate-tools">The same tool appears twice in the usage charts</h2>
+      <p>Two spellings aren't linked in the vocabulary yet. Add the second spelling as an alias in
+        <code>vocab/vocabulary.json</code> and rebuild. Names marked <b>*</b> aren't in the vocabulary at all
+        (<a href="ingestion.html#vocabulary">vocabulary</a>).</p>
+
+      <h2 id="layout">The layout looks wrong or a panel is too small</h2>
+      <ul>
+        <li>Double-click a border between sections to reset it.</li>
+        <li>To reset everything, clear the site's stored data in your browser for <code>localhost</code>.</li>
+        <li>Below about 980px wide the sections stack vertically; this is intentional.</li>
+      </ul>
+
+      <h2 id="pending">A paper says "Not ingested yet"</h2>
+      <p>The agent hasn't read it, so only its ranking and metadata are available. Its panel shows the commands
+        to ingest it (<a href="ingestion.html">adding papers</a>).</p>
+
+      <h2 id="unknown-steps">Many workflow steps say "Unknown"</h2>
+      <p>The agent could only read the abstract (the source line at the bottom of the summary says so). Those
+        steps are left out of the cross-paper counts. Re-ingest the paper if a full text becomes available.</p>
+
+      <h2 id="help-links">A help link goes to the wrong place</h2>
+      <p>Run <code>python pipeline/check_help.py</code>; it lists broken help links and missing sections
+        (<a href="ingestion.html#maintaining-help">maintaining the help</a>).</p>
+
+      <footer class="page-foot">Last reviewed 2026-11-10.</footer>
+    </main>
+  </div>
+  <script src="help.js"></script>
+</body>
+</html>

@@ -15,7 +15,10 @@
         <p class="sub">scRNA-seq cell annotation literature · ranked by the Talkington screening rules</p>
       </div>
     </div>
-    <div class="stats" id="stats"></div>
+    <div class="top-right">
+      <div class="stats" id="stats"></div>
+      <a class="help-button" href="help/index.html" target="_blank" rel="noopener" title="Open help in a new tab">Help</a>
+    </div>
   </header>
 
   <main class="layout">
@@ -23,7 +26,11 @@
       <div class="controls">
         <input type="search" id="search" placeholder="Search title, author, tool…" aria-label="Search papers">
         <div class="chips" id="tier-filter" role="group" aria-label="Filter by tier"></div>
-        <label class="toggle"><input type="checkbox" id="ingested-only"> Ingested only</label>
+        <div class="control-row">
+          <label class="toggle"><input type="checkbox" id="ingested-only"> Ingested only</label>
+          <a class="help-link" href="help/papers.html#paper-list" target="_blank" rel="noopener"
+             title="Help: the paper list" aria-label="Help: the paper list">?</a>
+        </div>
         <div id="active-filter"></div>
       </div>
       <ol class="paper-list" id="paper-list"></ol>
@@ -44,6 +51,8 @@
         <div class="head-left">
           <h2 id="workflow-title">Where it fits in the scRNA-seq workflow</h2>
           <div class="segmented" id="view-toggle" role="group" aria-label="Workflow view"></div>
+          <a class="help-link" id="workflow-help" href="help/workflow.html#this-paper" target="_blank" rel="noopener"
+             title="Help: the workflow panel" aria-label="Help: the workflow panel">?</a>
         </div>
         <div class="legend" id="legend"></div>
       </div>

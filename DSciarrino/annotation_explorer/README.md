@@ -19,6 +19,8 @@ the mockup (`../Mockup for Cell Annotation Program.drawio`):
   use, and restrict to the preferred tier. Click a bar (or any highlighted tool
   pill on a paper) for a tool card: steps, versions, the papers that use it, and a
   button to filter the paper list to them.
+- **Help:** the **Help** button (top right) and the small **?** links open the help pages in
+  `web/help/` in a new tab, at the relevant section.
 - **Resizable sections:** drag the borders between the paper list, the abstract,
   the workflow panel, and the diagram/step details. You can also focus a border
   and use the arrow keys. Double-clicking a border resets it. Sizes are
@@ -117,3 +119,17 @@ finding. Ingest more preferred papers before drawing conclusions.
 | `cache/openalex_history.json` | Citations-by-year for the charts (fetched once) |
 | `sources/` | Downloaded texts (git-ignored) |
 | `web/` | The app (plain HTML/CSS/JS, no build step) |
+| `web/help/` | Help pages (plain HTML, shared `help.css`; the page list and menu are in `help.js`) |
+| `pipeline/check_help.py` | Checks help links, sections and the menu; also runs at the end of every build |
+
+## Maintaining the help
+
+The help pages are part of the app. When you add or change a feature:
+
+1. Update the matching page in `web/help/` and its "Last reviewed" date.
+2. When adding a page, add it to the `PAGES` list in `web/help/help.js`.
+3. Keep section ids stable: the app links to `help/<page>.html#<section>`. Pass these paths to
+   `helpLink()` in `app.js` as literal strings so the checker can find them.
+4. Run `python pipeline/check_help.py` (it also runs as part of `build_index.py`).
+
+Don't write current counts into the help; the overview page reads them live from `web/data/papers.json`.

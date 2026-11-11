@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help: Paper list &amp; abstract</title>
+  <link rel="stylesheet" href="help.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html">Annotation Explorer <span>· Help</span></a>
+    <a class="back" href="../index.html">← Back to the app</a>
+  </header>
+  <div class="wrap">
+    <nav class="toc" id="toc" aria-label="Help topics"></nav>
+    <main>
+      <h1>Paper list &amp; abstract</h1>
+      <p class="lede">The left side lists every paper in rank order; the top right shows the selected paper's
+        enhanced abstract.</p>
+
+      <h2 id="paper-list">The paper list</h2>
+      <p>Papers are grouped by relevance tier (<span class="tier preferred">Preferred</span>
+        <span class="tier caution">Use with caution</span> <span class="tier later">Later</span>
+        <span class="tier exclude">Out of scope</span>) and sorted within each tier. See
+        <a href="ranking.html">how papers are ranked</a>. Each row shows:</p>
+      <ul>
+        <li><b>#rank</b>: position in the overall ranking.</li>
+        <li>Title, first author and year, and citation count (from OpenAlex).</li>
+        <li><b>● ingested</b> if the agent has read the paper, or <b>○ pending</b> if it hasn't yet.</li>
+      </ul>
+
+      <h3 id="searching">Searching and filtering</h3>
+      <ul>
+        <li><b>Search box:</b> matches the title, authors, journal, category and focus, and, for ingested
+          papers, the names of tools they use (e.g. type <code>Seurat</code>).</li>
+        <li><b>Tier chips:</b> show one tier at a time; the number is how many papers are in it.</li>
+        <li><b>Ingested only:</b> hides papers the agent hasn't read yet.</li>
+        <li id="tool-filter"><b>Tool filter:</b> a chip such as <i>Using Seurat (7)</i> appears when you click
+          "Show only these papers" on a <a href="workflow.html#tool-cards">tool card</a>. Click its
+          <b>×</b> to clear it.</li>
+      </ul>
+      <p>Filters combine: for example, Preferred + Ingested only + a search term.</p>
+
+      <h3 id="keyboard">Keyboard</h3>
+      <table>
+        <tr><th>Keys</th><th>What it does</th></tr>
+        <tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>Select the previous or next paper in the list (when you're not
+          typing in a box).</td></tr>
+        <tr><td><kbd>Tab</kbd>, then <kbd>Enter</kbd> or <kbd>Space</kbd></td><td>Move to a paper and select
+          it.</td></tr>
+        <tr><td><kbd>←</kbd> <kbd>→</kbd> / <kbd>↑</kbd> <kbd>↓</kbd> on a focused border</td><td>Resize sections
+          (see <a href="#resizing">resizing</a>).</td></tr>
+      </table>
+
+      <h3 id="sharing">Sharing a paper</h3>
+      <p>The address bar changes to <code>…/#&lt;paper-id&gt;</code> when you select a paper. Copy that address
+        to link someone straight to it (they need the app running too).</p>
+
+      <h2 id="abstract">The enhanced abstract</h2>
+      <p>For ingested papers the agent writes its own summary of the paper. It isn't a copy of the published
+        abstract.</p>
+
+      <h3 id="tags">Tags under the title</h3>
+      <table>
+        <tr><th>Tag</th><th>Meaning</th></tr>
+        <tr><td>Tier · #N in tier</td><td>The paper's relevance tier and its position within that tier.</td></tr>
+        <tr><td>Rule N</td><td>Which screening rule decided the tier (<a href="ranking.html#rules">the rules</a>).</td></tr>
+        <tr><td>Category · focus</td><td>The paper's area in the literature sweep, e.g. <i>llm agent · agent</i>.</td></tr>
+        <tr><td>recent</td><td>Published in the last 5 years.</td></tr>
+        <tr><td>defines markers</td><td>The paper gives explicit marker genes for one or more cell types.</td></tr>
+      </table>
+
+      <h3 id="summary">Summary sections</h3>
+      <ul>
+        <li><b>In one line:</b> what the paper does and its headline result.</li>
+        <li><b>Headed sections:</b> usually problem, method, evaluation and results.</li>
+        <li><b>Key findings / Limitations:</b> including limitations the authors state.</li>
+        <li><b>Why it matters for this project:</b> relevance in terms of the screening rules.</li>
+        <li><b>Source line</b> (at the bottom): what the agent read, when, and anything it couldn't read
+          (e.g. "abstract only"). Check it before relying on a summary.</li>
+      </ul>
+
+      <h3 id="markers">Marker definitions</h3>
+      <p>If the paper defines cell types by marker genes, a table lists them: <b style="color:var(--tier-preferred)">positive
+        markers</b> in green, <b style="color:var(--tier-exclude)">negative markers</b> (genes that should <i>not</i> be expressed) in red,
+        and the species/tissue context. Gene symbols are kept as the paper writes them, so mouse genes appear in
+        mouse case (e.g. <code>Tcf7</code>) and surface proteins are marked <i>(protein)</i>. These rows are
+        raw material for annotation rules.</p>
+
+      <h3 id="links">Links box</h3>
+      <p>Free full text (and how it's available: PMC open access, preprint, arXiv…), DOI, PubMed and OpenAlex
+        records, then code, datasets and other links the agent found in the paper.</p>
+
+      <h3 id="citations">Citations box</h3>
+      <p>Total citations from OpenAlex, citations per year, the date the count was fetched, and a bar chart of
+        citations by year (hover a bar for the exact number). Counts are a snapshot; see
+        <a href="limitations.html#citations">limitations</a>.</p>
+
+      <h3 id="ranking-box">Ranking box</h3>
+      <p>The paper's overall rank and the three scores used to order papers within a tier: recency, citations,
+        and their combination. See <a href="ranking.html#within-tier">how they're calculated</a>.</p>
+
+      <h3 id="pending">Papers that aren't ingested yet</h3>
+      <p>Instead of a summary you'll see the screening note, why the paper was listed, and the commands to
+        ingest it (<a href="ingestion.html">adding papers</a>). The workflow panel has nothing to show for these
+        papers.</p>
+
+      <h2 id="resizing">Resizing the sections</h2>
+      <ul>
+        <li>Drag the border between the paper list and the right side, between the abstract and the workflow
+          panel, or (on wide screens, over 1200px) between the workflow diagram and the step details.</li>
+        <li>A border highlights when you hover over it. You can also <kbd>Tab</kbd> to it and use the arrow keys.</li>
+        <li><b>Double-click a border</b> to reset it.</li>
+        <li>Sizes are remembered in your browser. On narrow screens the sections stack and can't be resized.</li>
+      </ul>
+
+      <h2 id="dark-mode">Light and dark mode</h2>
+      <p>The app and these help pages follow your system's light or dark setting.</p>
+
+      <footer class="page-foot">Last reviewed 2026-11-10.</footer>
+    </main>
+  </div>
+  <script src="help.js"></script>
+</body>
+</html>

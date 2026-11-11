@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help: Annotation Explorer</title>
+  <link rel="stylesheet" href="help.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html">Annotation Explorer <span>· Help</span></a>
+    <a class="back" href="../index.html">← Back to the app</a>
+  </header>
+  <div class="wrap">
+    <nav class="toc" id="toc" aria-label="Help topics"></nav>
+    <main>
+      <h1>Overview &amp; quick start</h1>
+      <p class="lede">Annotation Explorer ranks research papers on scRNA-seq cell annotation, summarizes each paper,
+        and shows where it fits in the scRNA-seq analysis workflow. It supports the BSU-UB cell annotation project
+        for Dr. Anne Talkington's group.</p>
+
+      <p class="status" id="status"></p>
+
+      <h2 id="screen">What's on the screen</h2>
+      <p>Click a region to read about it.</p>
+      <div class="schematic">
+        <a class="s-list" href="papers.html#paper-list"><b>Paper list</b>Every paper from the literature sweep, in
+          rank order, grouped by tier. Search, filter, and pick a paper.</a>
+        <a class="s-top" href="papers.html#abstract"><b>Enhanced abstract</b>The agent's summary of the selected
+          paper, plus links, citations, ranking scores and any marker definitions.</a>
+        <a class="s-bottom" href="workflow.html"><b>Workflow panel</b>How the paper relates to each scRNA-seq
+          step, or, in the "All ingested papers" view, the most-used tools and methods at each step.</a>
+      </div>
+      <p>The borders between these sections can be dragged to resize them
+        (<a href="papers.html#resizing">details</a>).</p>
+
+      <h2 id="quick-start">Quick start</h2>
+      <ol>
+        <li><b>Pick a paper</b> in the list on the left. Papers marked <b>● ingested</b> have been read by the
+          agent and have full summaries; <b>○ pending</b> papers show only their ranking and metadata.</li>
+        <li><b>Read the summary</b> at the top right: the one-line summary first, then the headed sections,
+          and the "Why it matters for this project" note.</li>
+        <li><b>Check the workflow panel</b> at the bottom: dark boxes are where the paper makes its main
+          contribution. Click a box for details.</li>
+        <li><b>Compare across papers:</b> switch the workflow panel to <b>All ingested papers</b> to see which
+          tools and methods are used most at each step.</li>
+      </ol>
+
+      <h2 id="running">Running the app</h2>
+      <p>From the <code>annotation_explorer</code> folder:</p>
+      <pre><code>python pipeline/build_index.py
+python -m http.server 8765 --directory web</code></pre>
+      <p>Then open <code>http://localhost:8765</code>. The first command ranks the papers and collects the
+        agent's summaries into the app's data file; run it again whenever papers are added. The app has to be
+        served this way: opening <code>index.html</code> directly from disk won't load its data
+        (<a href="troubleshooting.html#data-not-loading">why</a>).</p>
+
+      <h2 id="topics">Help topics</h2>
+      <div class="cards">
+        <a href="papers.html"><b>Paper list &amp; abstract</b><span>Searching, filtering, reading a summary,
+          links and citations.</span></a>
+        <a href="workflow.html"><b>Workflow panel</b><span>Per-paper workflow mapping, cross-paper tool usage,
+          tool cards.</span></a>
+        <a href="ranking.html"><b>How papers are ranked</b><span>Relevance tiers from the screening rules, then
+          recency and citations.</span></a>
+        <a href="ingestion.html"><b>Adding papers</b><span>How the agent reads papers and how to add more.</span></a>
+        <a href="limitations.html"><b>Data sources &amp; limitations</b><span>Where the data comes from and what
+          not to over-read.</span></a>
+        <a href="troubleshooting.html"><b>Troubleshooting</b><span>Data not loading, missing papers, odd
+          layouts.</span></a>
+      </div>
+
+      <footer class="page-foot">Last reviewed 2026-11-10. Help pages live in
+        <code>web/help/</code>; see <a href="ingestion.html#maintaining-help">maintaining the help</a>.</footer>
+    </main>
+  </div>
+  <script src="help.js"></script>
+  <script>
+    // Live status from the app's data file, so this page never shows stale counts.
+    fetch("../data/papers.json", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => {
+        const ingested = d.papers.filter((p) => p.ingest).length;
+        const preferred = d.papers.filter((p) => p.tier === "preferred").length;
+        document.getElementById("status").textContent =
+          `Current data: ${d.papers.length} papers ranked (${preferred} preferred), ${ingested} ingested by the agent; index built ${d.generated}.`;
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>

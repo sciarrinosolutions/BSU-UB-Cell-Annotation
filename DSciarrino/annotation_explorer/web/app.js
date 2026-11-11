@@ -90,6 +90,10 @@ function svg(tag, attrs = {}, ...children) {
 }
 const fmt = (n) => (n == null ? "—" : n.toLocaleString());
 const link = (label, url) => h("a", { href: url, target: "_blank", rel: "noopener" }, label);
+// "?" link to a help page section, opened in a new tab. Pass the literal
+// "help/<page>.html#<section>" path so pipeline/check_help.py can verify it.
+const helpLink = (path, topic) =>
+  h("a", { class: "help-link", href: path, target: "_blank", rel: "noopener", title: `Help: ${topic}`, "aria-label": `Help: ${topic}` }, "?");
 
 // --- data ---------------------------------------------------------------------
 async function load() {
@@ -102,7 +106,8 @@ async function load() {
       h("div", { class: "notice warn" },
         "Couldn't load data/papers.json. Serve this folder over HTTP (browsers block fetch() from file://), e.g. ",
         h("code", {}, "python -m http.server 8765 --directory web"),
-        ", and run ", h("code", {}, "python pipeline/build_index.py"), " first."));
+        ", and run ", h("code", {}, "python pipeline/build_index.py"), " first. ",
+        h("a", { href: "help/troubleshooting.html#data-not-loading", target: "_blank", rel: "noopener" }, "More help")));
     return;
   }
   const fromHash = decodeURIComponent(location.hash.slice(1));
@@ -175,6 +180,8 @@ function renderViewToggle() {
   document.getElementById("view-toggle").replaceChildren(opt("paper", "This paper"), opt("all", `All ingested papers (${n})`));
   document.getElementById("workflow-title").textContent =
     state.view === "all" ? "Most-used tools and methods per workflow step" : "Where it fits in the scRNA-seq workflow";
+  document.getElementById("workflow-help").href =
+    state.view === "all" ? "help/workflow.html#all-papers" : "help/workflow.html#this-paper";
 }
 
 function renderActiveFilter() {
@@ -280,7 +287,8 @@ function renderAbstract(p) {
       h("span", { class: "tag" }, RULES[p.rule] || `Rule ${p.rule}`),
       h("span", { class: "tag" }, `${p.category.replace(/_/g, " ")} · ${p.focus.replace(/_/g, " ")}`),
       p.recent && h("span", { class: "tag" }, "recent"),
-      p.markers_defined && h("span", { class: "tag" }, "defines markers")),
+      p.markers_defined && h("span", { class: "tag" }, "defines markers"),
+      helpLink("help/papers.html#tags", "what these tags mean")),
   );
 
   if (ing) {
@@ -299,7 +307,8 @@ function renderAbstract(p) {
     main.append(h("div", { class: "provenance" },
       `Ingested ${ing.ingestion.date} by ${ing.ingestion.agent} from: `,
       ing.ingestion.sources.map((s, i) => [i ? ", " : "", link(s.label, s.url)]),
-      ing.ingestion.notes ? ` — ${ing.ingestion.notes}` : ""));
+      ing.ingestion.notes ? ` — ${ing.ingestion.notes}` : "", " ",
+      helpLink("help/limitations.html#agent", "how reliable agent summaries are")));
   } else {
     main.append(
       h("div", { class: "notice" },
@@ -307,7 +316,8 @@ function renderAbstract(p) {
         h("p", { style: "margin:0 0 6px" }, "Screening note: ", p.reason),
         h("p", { style: "margin:0" }, "To ingest: ", h("code", {}, `python pipeline/fetch_sources.py ${p.id}`),
           ", have the agent write ", h("code", {}, `ingested/${p.id}.json`), " (see AGENT_INGEST.md), then ",
-          h("code", {}, "python pipeline/build_index.py"), ".")),
+          h("code", {}, "python pipeline/build_index.py"), ". ",
+          h("a", { href: "help/ingestion.html#steps", target: "_blank", rel: "noopener" }, "How ingestion works"))),
       h("div", { class: "why" }, h("h3", {}, "Why it was listed"), h("p", {}, p.why_listed)));
   }
 
@@ -318,7 +328,8 @@ function renderAbstract(p) {
 function markerTable(cellTypes) {
   const genes = (list, cls) => (list || []).map((g, i) => [i ? ", " : "", h("span", { class: `gene ${cls}` }, g)]);
   return h("details", { class: "markers", open: true },
-    h("summary", {}, `Marker definitions from this paper (${cellTypes.length})`),
+    h("summary", {}, `Marker definitions from this paper (${cellTypes.length}) `,
+      helpLink("help/papers.html#markers", "marker definitions")),
     h("table", {},
       h("thead", {}, h("tr", {}, h("th", {}, "Cell type"), h("th", {}, "Positive"), h("th", {}, "Negative"), h("th", {}, "Context"))),
       h("tbody", {}, cellTypes.map((c) => h("tr", {},
@@ -342,7 +353,7 @@ function renderAside(p) {
   }
 
   const citeBox = h("div", { class: "box" },
-    h("h3", {}, "Citations"),
+    h("h3", {}, "Citations ", helpLink("help/papers.html#citations", "citation counts")),
     h("div", { class: "citebig" }, fmt(p.citations)),
     h("div", { class: "citesub" },
       `${p.citations_per_year ?? "—"} per year · OpenAlex, ${p.citations_retrieved || "n/a"}`),
@@ -351,7 +362,7 @@ function renderAside(p) {
   const s = p.scores;
   const meter = (v) => h("div", { class: "meter" }, h("span", { style: `width:${Math.round(v * 100)}%` }));
   const rankBox = h("div", { class: "box" },
-    h("h3", {}, "Ranking"),
+    h("h3", {}, "Ranking ", helpLink("help/ranking.html#within-tier", "how papers are ranked")),
     h("div", { class: "citesub", style: "margin-bottom:6px" },
       `#${p.rank} overall · tier first, then recency and citations`),
     h("div", { class: "scores" },
@@ -583,7 +594,8 @@ function renderUsageDetail() {
     h("h4", {}, "Methods"), barList(state.stage, "methods"),
     h("p", { class: "hint", style: "margin-top:10px" },
       `n = ${n} ingested paper${n === 1 ? "" : "s"}${state.usageTier === "preferred" ? " (preferred tier)" : ""}. `,
-      `${METRICS[state.metric].label}: ${METRICS[state.metric].hint}. Counts reflect this sample, which leans toward annotation-method papers. Click a bar for details.`),
+      `${METRICS[state.metric].label}: ${METRICS[state.metric].hint}. Counts reflect this sample, which leans toward annotation-method papers. Click a bar for details. `,
+      h("a", { href: "help/workflow.html#counting", target: "_blank", rel: "noopener" }, "How usage is counted")),
   ].flat(Infinity).filter(Boolean));
 }
 
@@ -609,7 +621,7 @@ function toolCard({ kind, name }) {
     `← Back to ${state.data.stages.find((s) => s.key === state.stage).label}`);
   return [
     back,
-    h("h3", {}, name),
+    h("h3", {}, name, " ", helpLink("help/workflow.html#tool-cards", "tool cards")),
     h("div", { class: "tags" },
       h("span", { class: "tag" }, kind === "tools" ? (meta.kind || "tool") : "method"),
       meta.language && h("span", { class: "tag" }, meta.language),

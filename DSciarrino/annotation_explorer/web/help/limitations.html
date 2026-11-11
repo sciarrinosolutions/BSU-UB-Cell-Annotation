@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help: Data sources &amp; limitations</title>
+  <link rel="stylesheet" href="help.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html">Annotation Explorer <span>· Help</span></a>
+    <a class="back" href="../index.html">← Back to the app</a>
+  </header>
+  <div class="wrap">
+    <nav class="toc" id="toc" aria-label="Help topics"></nav>
+    <main>
+      <h1>Data sources &amp; limitations</h1>
+      <p class="lede">Where the app's information comes from, and what it can't tell you.</p>
+
+      <h2 id="sources">Where the data comes from</h2>
+      <table>
+        <tr><th>Information</th><th>Source</th></tr>
+        <tr><td>The list of papers</td><td>A literature sweep of Europe PMC (covering PubMed, PMC, bioRxiv and
+          medRxiv) and arXiv, curated by hand and checked by DOI. See
+          <code>literature_sweep/README.md</code>.</td></tr>
+        <tr><td>Free full-text links and licenses</td><td>Europe PMC and arXiv records.</td></tr>
+        <tr><td>Citation counts and by-year charts</td><td>OpenAlex.</td></tr>
+        <tr><td>Relevance tiers</td><td>The screening rules in <code>SKILLS.md</code>, applied paper by paper.</td></tr>
+        <tr><td>Summaries, workflow mapping, tools, markers</td><td>The ingestion agent, from the paper's text.</td></tr>
+      </table>
+
+      <h2 id="sample">The ingested sample is small and selective</h2>
+      <p>Only some papers have been ingested (the overview page shows the current number). Cross-paper usage
+        counts describe <i>those</i> papers. The literature sweep also leans toward annotation-method papers,
+        which mostly start from published data, so early steps (sequencing, quantification) look thinly covered.
+        Popular here means popular in the annotation literature, not in all scRNA-seq work.</p>
+
+      <h2 id="agent">Agent summaries can be wrong</h2>
+      <ul>
+        <li>Each summary was written by an AI agent from the text it could read. Check the source line at the
+          bottom of the abstract: some records are based on the abstract alone, and figures and supplementary
+          tables usually weren't read.</li>
+        <li>Numbers that only appear in figures may be missing or described in words.</li>
+        <li>Before using marker definitions as annotation rules, check them against the paper.</li>
+      </ul>
+
+      <h2 id="ratings">Ratings are judgment calls</h2>
+      <p>Tiers come from applying the screening rules, partly from titles and prior knowledge of each paper.
+        Ratings marked <i>needs review</i> and the open questions in <code>SKILLS.md</code> should be checked with
+        Dr. Talkington. See <a href="ranking.html#who-decides">who decides the tiers</a>.</p>
+
+      <h2 id="citations">Citation counts are a snapshot</h2>
+      <ul>
+        <li>Counts are fetched from OpenAlex on the date shown in each paper's Citations box and don't update
+          on their own.</li>
+        <li>OpenAlex usually merges a preprint's citations with its journal version, but not always.</li>
+        <li>Very recent papers have had little time to be cited, so citations per year can understate them.</li>
+        <li>Google Scholar typically reports higher counts; it isn't used because it has no API.</li>
+      </ul>
+
+      <h2 id="labels">Dataset labels aren't ground truth</h2>
+      <p>Some resources (e.g. TISCH2) label cell types with an automated pipeline. Treat such labels as a
+        starting point, not verified ground truth, when benchmarking.</p>
+
+      <h2 id="licenses">Reuse and licenses</h2>
+      <p>"Free to read" isn't the same as "free to redistribute". Papers under CC BY or CC0 can be shared with
+        attribution; NC/ND licenses and author manuscripts can be read and mined for facts such as marker lists,
+        but their full text and figures shouldn't be committed to the public repository. That's why downloaded
+        texts in <code>sources/</code> stay local.</p>
+
+      <footer class="page-foot">Last reviewed 2026-11-10.</footer>
+    </main>
+  </div>
+  <script src="help.js"></script>
+</body>
+</html>

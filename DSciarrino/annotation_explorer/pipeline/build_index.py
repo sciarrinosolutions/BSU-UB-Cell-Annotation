@@ -30,6 +30,7 @@ from common import (
     CACHE, CITATIONS, HEADERS, INGESTED, SCREENED, STAGES, WEB_DATA, load_schema, paper_id,
 )
 from vocab import Vocabulary
+import check_help
 
 TIERS = ["preferred", "caution", "later", "exclude"]
 TIER_LABELS = {
@@ -276,6 +277,11 @@ def main():
     if n_unlisted:
         print(f"{n_unlisted} tool/method names aren't in vocab/vocabulary.json "
               f"(listed in cache/unlisted_names.json); they're counted under their own names.")
+
+    # Warn (without failing the build) if the help pages have broken links.
+    _, help_problems = check_help.check()
+    if help_problems:
+        print(f"\nHelp pages: {len(help_problems)} problem(s); run python pipeline/check_help.py for details.")
     if errors:
         print("\nSkipped invalid ingestion records:", *errors, sep="\n  ")
         sys.exit(1)
