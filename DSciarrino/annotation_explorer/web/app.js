@@ -365,10 +365,12 @@ function renderAside(p) {
     h("h3", {}, "Ranking ", helpLink("help/ranking.html#within-tier", "how papers are ranked")),
     h("div", { class: "citesub", style: "margin-bottom:6px" },
       `#${p.rank} overall · tier first, then recency and citations`),
+    // Each label/value is its own element: bare text nodes side by side would merge
+    // into one grid cell and push the bars out of their column.
     h("div", { class: "scores" },
-      "Recency", meter(s.recency), s.recency.toFixed(2),
-      "Citations", meter(s.citations), s.citations.toFixed(2),
-      "Within tier", meter(s.within_tier), s.within_tier.toFixed(2)));
+      [["Recency", s.recency], ["Citations", s.citations], ["Within tier", s.within_tier]].map(([label, v]) => [
+        h("span", { class: "score-label" }, label), meter(v), h("span", { class: "score-val" }, v.toFixed(2)),
+      ])));
 
   return h("div", { class: "aside" },
     h("div", { class: "box" }, h("h3", {}, "Links"), h("ul", {}, links), groups),

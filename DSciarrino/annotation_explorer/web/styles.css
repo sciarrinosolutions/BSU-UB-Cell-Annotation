@@ -216,6 +216,8 @@ body.resizing iframe, body.resizing svg { pointer-events: none; }
 .chart .bar { fill: var(--accent); }
 .chart .lbl { fill: var(--faint); font-size: 9px; }
 .scores { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 8px; align-items: center; font-size: 12px; }
+.score-label { white-space: nowrap; }
+.score-val { font-variant-numeric: tabular-nums; text-align: right; }
 .meter { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; }
 .meter span { display: block; height: 100%; background: var(--accent); }
 
