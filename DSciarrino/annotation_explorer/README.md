@@ -37,7 +37,8 @@ python -m http.server 8765 --directory web
 Then open <http://localhost:8765>. A local server is needed because browsers
 block loading `data/papers.json` from a `file://` page. In Claude Code, the
 `annotation-explorer` entry in the repo's `.claude/launch.json` starts the same
-server.
+server.          
+
 
 ## How it works
 
