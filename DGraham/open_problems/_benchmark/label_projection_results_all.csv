@@ -1,0 +1,115 @@
+method_id,method,control,dataset,succeeded,accuracy,f1_weighted,f1_macro,f1_micro,scaled_score,runtime_min,peak_mem_gb
+true_labels,True labels,True,Diabetic Kidney Disease,True,1,1,1,1,1.0,0.2,5.5
+xgboost,XGBoost,False,Diabetic Kidney Disease,True,0.9644,0.9634,0.9225,0.9644,0.948,3.3,24.1
+logistic_regression,Logistic Regression,False,Diabetic Kidney Disease,True,0.9572,0.9567,0.9413,0.9572,0.946,0.3,6.8
+scanvi,scANVI,False,Diabetic Kidney Disease,True,0.957,0.9579,0.936,0.957,0.945,2.4,24.6
+scanvi_scarches,scANVI+scArches,False,Diabetic Kidney Disease,True,0.957,0.9567,0.9366,0.957,0.945,17.6,21.5
+scimilarity_kNN,SCimilarity (kNN),False,Diabetic Kidney Disease,True,0.9553,0.9556,0.9292,0.9553,0.942,8.7,28.5
+seurat_transferdata,Seurat TransferData,False,Diabetic Kidney Disease,True,0.9541,0.9544,0.9344,0.9541,0.942,2.2,11.7
+multilayer_perceptron,Multilayer perceptron,False,Diabetic Kidney Disease,True,0.954,0.9529,0.9245,0.954,0.939,0.5,2.9
+knn,KNN,False,Diabetic Kidney Disease,True,0.949,0.9487,0.9286,0.949,0.936,0.2,5.4
+naive_bayesian_classifier,Naive Bayesian Classifier,False,Diabetic Kidney Disease,True,0.9269,0.9296,0.9181,0.9269,0.914,0.2,5.4
+singler,SingleR,False,Diabetic Kidney Disease,True,0.9147,0.9192,0.9027,0.9147,0.899,10.3,7.4
+scimilarity_default,SCimilarity (default),False,Diabetic Kidney Disease,True,0.8869,0.8655,0.6233,0.8869,0.795,7.8,31.1
+scgpt_zero_shot,scGPT (zero shot),False,Diabetic Kidney Disease,True,0.8486,0.8339,0.5239,0.8486,0.736,6.4,1536.0
+majority_vote,Majority Vote,True,Diabetic Kidney Disease,True,0.2954,0.1347,0.0351,0.2954,0.07,0.2,6.7
+random_labels,Random Labels,True,Diabetic Kidney Disease,True,0.1808,0.1801,0.0774,0.1808,0.024,0.2,6.0
+uce,UCE,False,Diabetic Kidney Disease,True,0.1813,0.179,0.0743,0.1813,0.023,29.4,465.6
+geneformer,Geneformer,False,Diabetic Kidney Disease,False,,,,,0.0,33.0,
+scgpt_fine-tuned,scGPT (fine-tuned),False,Diabetic Kidney Disease,False,,,,,0.0,240.2,
+scprint,scPRINT,False,Diabetic Kidney Disease,False,,,,,0.0,7.5,
+true_labels,True labels,True,GTEX v9,True,1,1,1,1,1.0,0.2,5.4
+scanvi_scarches,scANVI+scArches,False,GTEX v9,True,0.8797,0.8908,0.4555,0.8797,0.773,25.9,41.2
+logistic_regression,Logistic Regression,False,GTEX v9,True,0.8829,0.8851,0.4437,0.8829,0.77,0.9,7.4
+scanvi,scANVI,False,GTEX v9,True,0.8899,0.9019,0.4083,0.8899,0.769,11.0,42.0
+knn,KNN,False,GTEX v9,True,0.8523,0.8582,0.3913,0.8523,0.735,0.3,11.7
+scimilarity_kNN,SCimilarity (kNN),False,GTEX v9,True,0.8253,0.8386,0.4563,0.8253,0.732,18.7,33.9
+seurat_transferdata,Seurat TransferData,False,GTEX v9,True,0.841,0.8457,0.4186,0.841,0.732,6.9,23.0
+xgboost,XGBoost,False,GTEX v9,True,0.8328,0.8408,0.3251,0.8328,0.703,15.8,34.0
+singler,SingleR,False,GTEX v9,True,0.7903,0.823,0.3753,0.7903,0.69,94.0,16.1
+naive_bayesian_classifier,Naive Bayesian Classifier,False,GTEX v9,True,0.7599,0.7937,0.3363,0.7599,0.657,0.2,4.5
+multilayer_perceptron,Multilayer perceptron,False,GTEX v9,True,0.7784,0.7896,0.2948,0.7784,0.655,6.2,4.6
+scimilarity_default,SCimilarity (default),False,GTEX v9,True,0.6665,0.6504,0.3254,0.6665,0.569,13.2,26.7
+scgpt_zero_shot,scGPT (zero shot),False,GTEX v9,True,0.6234,0.6375,0.2534,0.6234,0.526,35.3,1638.4
+majority_vote,Majority Vote,True,GTEX v9,True,0.0799,0.0118,0.0082,0.0799,0.025,0.2,8.3
+random_labels,Random Labels,True,GTEX v9,True,0.0324,0.0397,0.0071,0.0324,0.007,0.2,8.3
+uce,UCE,False,GTEX v9,True,0.0054,0.0082,0.0037,0.0054,0.0,139.1,511.8
+geneformer,Geneformer,False,GTEX v9,False,,,,,0.0,205.3,
+scgpt_fine-tuned,scGPT (fine-tuned),False,GTEX v9,False,,,,,0.0,205.0,
+scprint,scPRINT,False,GTEX v9,False,,,,,0.0,225.0,
+true_labels,True labels,True,HypoMap,True,1,1,1,1,1.0,0.1,5.4
+scanvi,scANVI,False,HypoMap,True,0.9973,0.9972,0.9926,0.9973,0.995,15.8,90.4
+multilayer_perceptron,Multilayer perceptron,False,HypoMap,True,0.9973,0.9972,0.9833,0.9973,0.993,6.7,18.1
+seurat_transferdata,Seurat TransferData,False,HypoMap,True,0.9964,0.9964,0.9898,0.9964,0.993,16.4,67.9
+xgboost,XGBoost,False,HypoMap,True,0.9973,0.9972,0.9815,0.9973,0.992,16.8,76.1
+logistic_regression,Logistic Regression,False,HypoMap,True,0.9964,0.9963,0.9767,0.9964,0.99,0.9,18.3
+scanvi_scarches,scANVI+scArches,False,HypoMap,True,0.9964,0.9964,0.9783,0.9964,0.99,41.6,90.4
+knn,KNN,False,HypoMap,True,0.9954,0.9954,0.973,0.9954,0.988,0.4,21.3
+naive_bayesian_classifier,Naive Bayesian Classifier,False,HypoMap,True,0.9945,0.9946,0.9626,0.9945,0.984,0.4,17.9
+singler,SingleR,False,HypoMap,True,0.9927,0.9927,0.9567,0.9927,0.98,94.2,46.5
+majority_vote,Majority Vote,True,HypoMap,True,0.4516,0.281,0.0778,0.4516,0.101,1.0,17.9
+uce,UCE,False,HypoMap,True,0.3841,0.3397,0.0979,0.3841,0.078,260.4,630.8
+random_labels,Random Labels,True,HypoMap,True,0.3157,0.3175,0.0707,0.3157,0.013,0.8,17.8
+scgpt_zero_shot,scGPT (zero shot),False,HypoMap,False,,,,,0.0,3.8,
+scimilarity_default,SCimilarity (default),False,HypoMap,False,,,,,0.0,11.7,
+scimilarity_kNN,SCimilarity (kNN),False,HypoMap,False,,,,,0.0,11.7,
+geneformer,Geneformer,False,HypoMap,False,,,,,0.0,4.0,
+scgpt_fine-tuned,scGPT (fine-tuned),False,HypoMap,False,,,,,0.0,2.0,
+scprint,scPRINT,False,HypoMap,False,,,,,0.0,116.2,
+true_labels,True labels,True,Immune Cell Atlas,True,1,1,1,1,1.0,0.1,5.6
+scanvi,scANVI,False,Immune Cell Atlas,True,0.8926,0.8888,0.7967,0.8926,0.867,13.1,65.4
+logistic_regression,Logistic Regression,False,Immune Cell Atlas,True,0.885,0.8832,0.7793,0.885,0.858,1.1,15.5
+scanvi_scarches,scANVI+scArches,False,Immune Cell Atlas,True,0.9035,0.9012,0.7255,0.9035,0.858,31.0,62.7
+scimilarity_kNN,SCimilarity (kNN),False,Immune Cell Atlas,True,0.8752,0.8701,0.7403,0.8752,0.84,23.2,55.4
+multilayer_perceptron,Multilayer perceptron,False,Immune Cell Atlas,True,0.8676,0.8666,0.6998,0.8676,0.825,30.0,15.3
+scimilarity_default,SCimilarity (default),False,Immune Cell Atlas,True,0.8354,0.8455,0.6367,0.8354,0.788,29.2,55.4
+seurat_transferdata,Seurat TransferData,False,Immune Cell Atlas,True,0.8269,0.8156,0.6783,0.8269,0.786,15.2,53.3
+xgboost,XGBoost,False,Immune Cell Atlas,True,0.8192,0.8176,0.6453,0.8192,0.775,46.1,59.6
+knn,KNN,False,Immune Cell Atlas,True,0.8144,0.8109,0.651,0.8144,0.772,0.4,15.3
+scgpt_zero_shot,scGPT (zero shot),False,Immune Cell Atlas,True,0.6787,0.658,0.4735,0.6787,0.621,37.3,1331.2
+naive_bayesian_classifier,Naive Bayesian Classifier,False,Immune Cell Atlas,True,0.6389,0.6612,0.5209,0.6389,0.614,0.4,15.3
+random_labels,Random Labels,True,Immune Cell Atlas,True,0.0481,0.0568,0.0223,0.0481,0.041,0.1,14.9
+uce,UCE,False,Immune Cell Atlas,True,0.0366,0.0221,0.0131,0.0366,0.024,229.5,515.5
+majority_vote,Majority Vote,True,Immune Cell Atlas,True,0.0058,0.0001,0.0004,0.0058,0.0,0.2,14.9
+singler,SingleR,False,Immune Cell Atlas,False,,,,,0.0,240.2,
+geneformer,Geneformer,False,Immune Cell Atlas,False,,,,,0.0,1733.9,
+scgpt_fine-tuned,scGPT (fine-tuned),False,Immune Cell Atlas,False,,,,,0.0,240.3,
+scprint,scPRINT,False,Immune Cell Atlas,False,,,,,0.0,30.9,
+true_labels,True labels,True,Mouse Pancreatic Islet Atlas,True,1,1,1,1,1.0,0.0,5.8
+scanvi_scarches,scANVI+scArches,False,Mouse Pancreatic Islet Atlas,True,0.9781,0.9774,0.9051,0.9781,0.955,28.7,58.3
+logistic_regression,Logistic Regression,False,Mouse Pancreatic Islet Atlas,True,0.978,0.977,0.8801,0.978,0.949,0.6,18.8
+scanvi,scANVI,False,Mouse Pancreatic Islet Atlas,True,0.9768,0.9768,0.8758,0.9768,0.947,11.3,56.7
+knn,KNN,False,Mouse Pancreatic Islet Atlas,True,0.9756,0.9744,0.8426,0.9756,0.937,0.3,21.8
+xgboost,XGBoost,False,Mouse Pancreatic Islet Atlas,True,0.9752,0.9735,0.8453,0.9752,0.937,9.5,65.4
+multilayer_perceptron,Multilayer perceptron,False,Mouse Pancreatic Islet Atlas,True,0.9703,0.9707,0.8381,0.9703,0.931,12.9,18.6
+seurat_transferdata,Seurat TransferData,False,Mouse Pancreatic Islet Atlas,True,0.9659,0.9607,0.7819,0.9659,0.911,13.4,69.0
+naive_bayesian_classifier,Naive Bayesian Classifier,False,Mouse Pancreatic Islet Atlas,True,0.9502,0.9522,0.7794,0.9502,0.898,0.2,18.0
+majority_vote,Majority Vote,True,Mouse Pancreatic Islet Atlas,True,0.3239,0.1585,0.0376,0.3239,0.092,0.9,18.0
+random_labels,Random Labels,True,Mouse Pancreatic Islet Atlas,True,0.172,0.1755,0.0714,0.172,0.014,0.9,17.9
+uce,UCE,False,Mouse Pancreatic Islet Atlas,True,0.1666,0.1702,0.0698,0.1666,0.012,202.5,523.6
+scgpt_zero_shot,scGPT (zero shot),False,Mouse Pancreatic Islet Atlas,False,,,,,0.0,7.3,
+scimilarity_default,SCimilarity (default),False,Mouse Pancreatic Islet Atlas,False,,,,,0.0,18.7,
+scimilarity_kNN,SCimilarity (kNN),False,Mouse Pancreatic Islet Atlas,False,,,,,0.0,18.7,
+singler,SingleR,False,Mouse Pancreatic Islet Atlas,False,,,,,0.0,272.5,
+geneformer,Geneformer,False,Mouse Pancreatic Islet Atlas,False,,,,,0.0,4.0,
+scgpt_fine-tuned,scGPT (fine-tuned),False,Mouse Pancreatic Islet Atlas,False,,,,,0.0,2.2,
+scprint,scPRINT,False,Mouse Pancreatic Islet Atlas,False,,,,,0.0,2.7,
+true_labels,True labels,True,Tabula Sapiens,True,1,1,1,1,1.0,0.1,5.4
+seurat_transferdata,Seurat TransferData,False,Tabula Sapiens,True,0.3768,0.3838,0.1672,0.3768,0.32,34.0,100.6
+multilayer_perceptron,Multilayer perceptron,False,Tabula Sapiens,True,0.2887,0.3723,0.1214,0.2887,0.261,51.7,25.2
+scanvi_scarches,scANVI+scArches,False,Tabula Sapiens,True,0.2711,0.2911,0.1427,0.2711,0.237,58.5,138.5
+xgboost,XGBoost,False,Tabula Sapiens,True,0.243,0.302,0.1044,0.243,0.216,189.2,98.6
+scimilarity_default,SCimilarity (default),False,Tabula Sapiens,True,0.2007,0.247,0.1318,0.2007,0.187,40.2,83.3
+scimilarity_kNN,SCimilarity (kNN),False,Tabula Sapiens,True,0.1866,0.2341,0.1392,0.1866,0.179,13.3,83.4
+logistic_regression,Logistic Regression,False,Tabula Sapiens,True,0.1831,0.2039,0.1244,0.1831,0.166,3.8,26.0
+knn,KNN,False,Tabula Sapiens,True,0.1725,0.2218,0.1029,0.1725,0.159,0.3,28.7
+naive_bayesian_classifier,Naive Bayesian Classifier,False,Tabula Sapiens,True,0.1585,0.1899,0.1622,0.1585,0.159,0.4,24.7
+singler,SingleR,False,Tabula Sapiens,True,0.1725,0.1843,0.1296,0.1725,0.157,100.2,88.0
+scanvi,scANVI,False,Tabula Sapiens,True,0.1725,0.1981,0.1083,0.1725,0.155,24.6,130.8
+scgpt_zero_shot,scGPT (zero shot),False,Tabula Sapiens,True,0.162,0.1876,0.1074,0.162,0.147,21.0,1740.8
+random_labels,Random Labels,True,Tabula Sapiens,True,0.0176,0.019,0.0039,0.0176,0.005,2.4,24.3
+majority_vote,Majority Vote,True,Tabula Sapiens,True,0.0211,0.0009,0.002,0.0211,0.002,2.6,24.4
+uce,UCE,False,Tabula Sapiens,True,0.0106,0.0008,0.0015,0.0106,0.0,331.3,686.0
+geneformer,Geneformer,False,Tabula Sapiens,False,,,,,0.0,96.0,
+scgpt_fine-tuned,scGPT (fine-tuned),False,Tabula Sapiens,False,,,,,0.0,240.5,
+scprint,scPRINT,False,Tabula Sapiens,False,,,,,0.0,206.7,
